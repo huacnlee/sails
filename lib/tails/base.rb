@@ -36,6 +36,10 @@ module Tails
   def self.root
     @root ||= Pathname.new(Dir.pwd)
   end
+  
+  def self.root=(root)
+    @root = Pathname.new(root)
+  end
 
   # Tails.env.development?
   def self.env
@@ -76,7 +80,10 @@ module Tails
 
     ActiveSupport::Dependencies.autoload_paths += Tails.config.autoload_paths
 
-    require self.root.join('config/environments/',Tails.env)
+    env_file = self.root.join('config/environments/',Tails.env)
+    if File.exist?(env_file)
+      require env_file
+    end
 
     require "tails/service"
 

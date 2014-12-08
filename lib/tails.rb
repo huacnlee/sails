@@ -1,3 +1,4 @@
+require "tails/version"
 require "tails/base"
 require "tails/rails"
 require "tails/cli"
