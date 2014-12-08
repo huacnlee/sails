@@ -1,0 +1,17 @@
+namespace rb Thrift
+
+struct Session {
+  1:i64 user_id,
+  2:string access_token
+}
+
+exception OperationFailed {
+  1: i32 code,
+  2: string message
+}
+
+service <%= @app_name.capitalize %> {
+
+  // ping <-> pong
+  string ping() throws (1:OperationFailed failure)
+}

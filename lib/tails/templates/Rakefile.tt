@@ -20,7 +20,7 @@ task :gen do
   -strict \
   -debug \
   -verbose \
-  <%= @app_name %>.thrift'
+  <%= app_name %>.thrift'
 
   puts "[Done]"
 end

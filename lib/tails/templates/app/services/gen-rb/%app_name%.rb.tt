@@ -1,0 +1,7 @@
+module Thrift
+  module <%= app_name.capitalize %>
+    class Client
+      include ::Thrift::Client
+    end
+  end
+end

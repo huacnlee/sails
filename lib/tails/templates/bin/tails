@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-APP_PATH = File.expand_path('../../config/application',  __FILE__)
-$:.unshift APP_PATH
-require "config/application"
-require "tails/cli"
-
-Tails::CLI.start(ARGV)

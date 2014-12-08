@@ -76,6 +76,12 @@ module Tails
     def self.source_root
       __dir__
     end
+    
+    no_commands {
+      def app_name
+        @app_name
+      end
+    }
 
     option :daemon, type: :boolean, default: false
     option :mode, default: 'nonblocking'
@@ -110,6 +116,9 @@ module Tails
       templte_dir = File.join(File.dirname(__FILE__), "templates")
 
       directory 'templates', name
+      %W(log tmp/pids tmp/cache lib/tasks app/models/concerns config/initializers log).each do |dir_name|
+        empty_directory File.join(app_dir,dir_name)
+      end
       puts ''
     ensure
       @app_name = nil

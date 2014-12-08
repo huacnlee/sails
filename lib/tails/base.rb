@@ -5,7 +5,7 @@ require 'i18n'
 require 'thrift'
 require 'yaml'
 
-# Bundler.require()
+Bundler.require()
 
 module Tails
   extend ActiveSupport::Autoload
@@ -23,6 +23,7 @@ module Tails
     @config.i18n = I18n
     @config.i18n.load_path += Dir[Tails.root.join('config', 'locales', '*.{rb,yml}').to_s]
     @config.i18n.default_locale = :en
+    @config.thrift_processor = nil
     @config
   end
 
@@ -33,7 +34,7 @@ module Tails
 
   # Tails.root
   def self.root
-    @root ||= Pathname.new(File.expand_path('../../', __FILE__))
+    @root ||= Pathname.new(Dir.pwd)
   end
 
   # Tails.env.development?
@@ -78,7 +79,6 @@ module Tails
     require self.root.join('config/environments/',Tails.env)
 
     require "tails/service"
-    require "exceptions"
 
     puts "ENV: #{Tails.env}"
 
@@ -102,7 +102,7 @@ module Tails
     transport = ::Thrift::ServerSocket.new(nil, config.thrift_thread_port)
     transport_factory = ::Thrift::BufferedTransportFactory.new
     protocol_factory = ::Thrift::BinaryProtocolFactory.new
-    processor = ThriftServer::Poseidon::Processor.new(self.service)
+    processor = config.thrift_processor.new(self.service)
     server = ::Thrift::ThreadPoolServer.new(processor, transport, transport_factory, protocol_factory, Setting.pool_size)
 
     puts "Boot on: #{Tails.root}"
@@ -126,7 +126,7 @@ module Tails
     transport = ::Thrift::ServerSocket.new(nil, config.thrift_port)
     transport_factory = ::Thrift::FramedTransportFactory.new
     protocol_factory = ::Thrift::BinaryProtocolFactory.new
-    processor = ThriftServer::Poseidon::Processor.new(self.service)
+    processor = config.thrift_processor.new(self.service)
     server = ::Thrift::NonblockingServer.new(processor, transport, transport_factory)
 
     puts "Boot on: #{Tails.root}"

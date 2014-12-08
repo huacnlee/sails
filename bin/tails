@@ -4,13 +4,16 @@ git_path = File.expand_path('../../.git', __FILE__)
 if File.exist?(git_path)
   tails_path = File.expand_path('../../lib', __FILE__)
   $:.unshift(tails_path)
+  require_relative "../lib/tails/cli"
 end
 
-app_path = File.expand_path("../../config/application", __FILE__)
-if File.exist?(app_path)
-  require_relative "../../config/application"
+source_dir = Dir.pwd
+if File.exist?(File.join(source_dir,"config/application.rb"))
+  $:.unshift(source_dir)
+  require "config/application"
+  require "tails"
 else
-  require_relative "../lib/tails/cli"
+  require "tails/cli"
 end
 
 Tails::CLI.start(ARGV)
