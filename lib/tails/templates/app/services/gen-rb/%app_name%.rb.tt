@@ -3,5 +3,9 @@ module Thrift
     class Client
       include ::Thrift::Client
     end
+    
+    class Processor
+      include ::Thrift::Processor
+    end
   end
 end
