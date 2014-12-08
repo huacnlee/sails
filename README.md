@@ -1,7 +1,7 @@
 Tails
 =====
 
-Tails, create Thrift Server use like Rails
+Tails, create [Thrift](thrift.apache.org) app server like Rails.
 
 ## Installation
 
