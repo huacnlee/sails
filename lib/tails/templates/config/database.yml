@@ -1,0 +1,15 @@
+default: &default
+  adapter: mysql2
+  pool: 100
+  username: root
+  password:
+  socket: /tmp/mysql.sock
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

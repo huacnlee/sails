@@ -1,0 +1,54 @@
+require "rake"
+require "rubygems"
+
+require File.expand_path('../config/application.rb', __FILE__)
+
+Dir.glob('lib/tasks/*.rake').each { |r| import r }
+
+task :default => :test
+
+task :console do
+  puts "Starting thrift-server console..."
+  system "pry -I config/application.rb -r ./config/application.rb"
+end
+
+task :gen do
+  puts "Generating thrift code..."
+  system 'thrift \
+  --gen rb \
+  -out app/services/gen-rb \
+  -strict \
+  -debug \
+  -verbose \
+  <%= @app_name %>.thrift'
+
+  puts "[Done]"
+end
+
+task :test do
+  system 'rspec spec'
+end
+
+load 'active_record/railties/databases.rake'
+
+class << ActiveRecord::Tasks::DatabaseTasks
+  def env
+    @env ||= Tails.env
+  end
+
+  def migrations_paths
+    [File.expand_path('../db/migrate', __FILE__)]
+  end
+
+  def database_configuration
+    YAML.load open(File.expand_path('../config/database.yml', __FILE__)).read
+  end
+
+  def db_dir
+    File.expand_path('../db', __FILE__)
+  end
+end
+
+task :environment do
+  require File.expand_path('../config/application.rb', __FILE__)
+end

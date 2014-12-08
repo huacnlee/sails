@@ -1,0 +1,22 @@
+require 'tails'
+$LOAD_PATH.unshift Tails.root
+
+Bundler.require()
+
+require "app/services/application_service"
+
+module Tails
+  # config.app_name = '<%= @app_name %>'
+  # Thrift Configs
+  config.thrift_host = "127.0.0.1"
+  config.thrift_port = 4000
+  
+  # config.autoload_paths += %W(app/workers)
+  
+  config.i18n.default_locale = 'zh-CN'
+  
+  # cache store
+  # config.cache_store = [:dalli_store, '127.0.0.1']
+end
+
+Tails.init()

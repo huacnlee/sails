@@ -1,0 +1,10 @@
+$:.unshift Tails.root.join("app/services/gen-rb")
+
+require "<%= @app_name %>"
+
+module ApplicationService
+  extend ActiveSupport::Concern
+  
+  # def require_user!(user_id, access_token)
+  # end
+end

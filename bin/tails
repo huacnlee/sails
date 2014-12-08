@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+git_path = File.expand_path('../../.git', __FILE__)
+
+if File.exist?(git_path)
+  tails_path = File.expand_path('../../lib', __FILE__)
+  $:.unshift(tails_path)
+end
+
+app_path = File.expand_path("../../config/application", __FILE__)
+if File.exist?(app_path)
+  require_relative "../../config/application"
+else
+  require_relative "../lib/tails/cli"
+end
+
+Tails::CLI.start(ARGV)

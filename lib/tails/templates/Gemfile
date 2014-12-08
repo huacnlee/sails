@@ -1,0 +1,13 @@
+source 'https://rubygems.org'
+
+gem 'tails'
+gem 'activerecord', '~> 4.2.0.rc2'
+gem 'thin'
+# gem 'dalli'
+
+group :development, :test do
+  # gem 'rspec'
+  # gem 'factory_girl'
+  # gem 'database_cleaner'
+  # gem 'capistrano'
+end
