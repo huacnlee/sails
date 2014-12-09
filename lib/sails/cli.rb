@@ -72,6 +72,8 @@ module Sails
     include Thor::Actions
     
     map '-v' => :version
+    map 's' => :start
+    map 'c' => :console
 
     def self.source_root
       __dir__
