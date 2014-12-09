@@ -117,7 +117,6 @@ module Sails
   #     => "development"
   #     Sails.env.development?
   #     => true
-=> "development"
   def self.env
     @env ||= ActiveSupport::StringInquirer.new(ENV['RAILS_ENV'].presence || 'development')
   end
