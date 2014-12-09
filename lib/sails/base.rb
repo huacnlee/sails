@@ -7,7 +7,7 @@ require 'yaml'
 
 Bundler.require()
 
-module Tails
+module Sails
   extend ActiveSupport::Autoload
 
   class Config
@@ -17,11 +17,11 @@ module Tails
   def self.config
     return @config if defined?(@config)
     @config = Config.new.config
-    @config.app_name = "Tails"
+    @config.app_name = "Sails"
     @config.cache_store = [:memory_store]
     @config.autoload_paths = %W(app/models app/models/concerns app/workers app/services app/services/concerns lib)
     @config.i18n = I18n
-    @config.i18n.load_path += Dir[Tails.root.join('config', 'locales', '*.{rb,yml}').to_s]
+    @config.i18n.load_path += Dir[Sails.root.join('config', 'locales', '*.{rb,yml}').to_s]
     @config.i18n.default_locale = :en
     @config.thrift_processor = nil
     @config
@@ -32,7 +32,7 @@ module Tails
     @cache = ActiveSupport::Cache.lookup_store(self.config.cache_store)
   end
 
-  # Tails.root
+  # Sails.root
   def self.root
     @root ||= Pathname.new(Dir.pwd)
   end
@@ -41,16 +41,16 @@ module Tails
     @root = Pathname.new(root)
   end
 
-  # Tails.env.development?
+  # Sails.env.development?
   def self.env
     @env ||= ActiveSupport::StringInquirer.new(ENV['RAILS_ENV'].presence || 'development')
   end
 
   def self.logger
     return @logger if defined?(@logger)
-    @logger = Logger.new(File.join(Tails.root, "log/#{self.env}.log"))
+    @logger = Logger.new(File.join(Sails.root, "log/#{self.env}.log"))
     @logger.formatter = proc { |severity, datetime, progname, msg|
-      self.stdout_logger.info msg if !Tails.env.test?
+      self.stdout_logger.info msg if !Sails.env.test?
       "#{msg}\n"
     }
     @logger
@@ -66,7 +66,7 @@ module Tails
   end
 
   def self.load_initialize
-    Dir["#{Tails.root}/config/initializers/*.rb"].each do |f|
+    Dir["#{Sails.root}/config/initializers/*.rb"].each do |f|
       require f
     end
   end
@@ -78,16 +78,16 @@ module Tails
 
     self.root
 
-    ActiveSupport::Dependencies.autoload_paths += Tails.config.autoload_paths
+    ActiveSupport::Dependencies.autoload_paths += Sails.config.autoload_paths
 
-    env_file = self.root.join('config/environments/',Tails.env)
+    env_file = self.root.join('config/environments/',Sails.env)
     if File.exist?(env_file)
       require env_file
     end
 
-    require "tails/service"
+    require "sails/service"
 
-    puts "ENV: #{Tails.env}"
+    puts "ENV: #{Sails.env}"
 
     load_initialize
     @inited = true
@@ -102,7 +102,7 @@ module Tails
   end
 
   def self.service
-    @service ||= Tails::Service.new
+    @service ||= Sails::Service.new
   end
 
   def self.start_thread_pool_server!
@@ -112,8 +112,8 @@ module Tails
     processor = config.thrift_processor.new(self.service)
     server = ::Thrift::ThreadPoolServer.new(processor, transport, transport_factory, protocol_factory, Setting.pool_size)
 
-    puts "Boot on: #{Tails.root}"
-    puts "[#{Time.now}] Starting the Tails with ThreadPool size: #{Setting.pool_size}..."
+    puts "Boot on: #{Sails.root}"
+    puts "[#{Time.now}] Starting the Sails with ThreadPool size: #{Setting.pool_size}..."
     puts "serve: #{config.thrift_host}:#{config.thrift_thread_port}"
 
     begin
@@ -136,8 +136,8 @@ module Tails
     processor = config.thrift_processor.new(self.service)
     server = ::Thrift::NonblockingServer.new(processor, transport, transport_factory)
 
-    puts "Boot on: #{Tails.root}"
-    puts "[#{Time.now}] Starting the Tails with NonBlocking..."
+    puts "Boot on: #{Sails.root}"
+    puts "[#{Time.now}] Starting the Sails with NonBlocking..."
     puts "serve: #{config.thrift_host}:#{config.thrift_port}"
 
     begin

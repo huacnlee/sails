@@ -33,7 +33,7 @@ load 'active_record/railties/databases.rake'
 
 class << ActiveRecord::Tasks::DatabaseTasks
   def env
-    @env ||= Tails.env
+    @env ||= Sails.env
   end
 
   def migrations_paths

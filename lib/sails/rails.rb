@@ -1,15 +1,15 @@
 if not defined?(Rails)
   module Rails
     def self.logger
-      Tails.logger
+      Sails.logger
     end
 
     def self.env
-      Tails.env
+      Sails.env
     end
 
     def self.cache
-      Tails.cache
+      Sails.cache
     end
   end
 end

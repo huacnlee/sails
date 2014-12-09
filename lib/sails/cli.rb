@@ -1,16 +1,16 @@
 require 'thor'
-require 'tails/version'
+require 'sails/version'
 
-module Tails
+module Sails
   class ThreadDaemon
     class << self
       attr_accessor :options, :mode, :app_name, :pid_file
 
       def init(opts = {})
-        self.app_name = Tails.config.app_name
+        self.app_name = Sails.config.app_name
         self.mode = opts[:mode]
         self.app_name = "#{ThreadDaemon.app_name}-thread" if self.mode == "thread"
-        self.pid_file = Tails.root.join("tmp/#{ThreadDaemon.app_name}.pid")
+        self.pid_file = Sails.root.join("tmp/#{ThreadDaemon.app_name}.pid")
         self.options = options
       end
 
@@ -37,7 +37,7 @@ module Tails
         end
 
         pid = fork do
-          Tails.start!(self.mode)
+          Sails.start!(self.mode)
         end
         File.open(pid_file, "w+") do |f|
           f.puts pid
@@ -125,9 +125,9 @@ module Tails
       @rel_dir = nil
     end
     
-    desc "version", "Show Tails version"
+    desc "version", "Show Sails version"
     def version
-      puts "Tails #{Tails.version}"
+      puts "Sails #{Sails.version}"
     end
   end
 end

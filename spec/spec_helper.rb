@@ -1,4 +1,4 @@
-require_relative "../lib/tails"
+require_relative "../lib/sails"
 
-# Force set Tails root to spec/dummy
-Tails.root = File.expand_path("../dummy", __FILE__)
+# Force set Sails root to spec/dummy
+Sails.root = File.expand_path("../dummy", __FILE__)

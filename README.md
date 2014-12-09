@@ -1,12 +1,12 @@
-Tails
+Sails
 =====
 
-Tails, create [Thrift](thrift.apache.org) app server like Rails.
+Sails, create [Thrift](thrift.apache.org) app server like Rails.
 
 ## Installation
 
 ```
-$ gem install tails
+$ gem install sails
 ```
 
 ## Usage
@@ -14,9 +14,9 @@ $ gem install tails
 ### Create new project
 
 ```
-$ tails new foo
+$ sails new foo
 $ cd foo
-$ tails start
+$ sails start
 ```
 
 ### Generate Thrift IDL
@@ -30,4 +30,4 @@ $ rake gen
 
 ## API Documents
 
-http://rdoc.info/github/huacnlee/tails
+http://rdoc.info/github/huacnlee/sails

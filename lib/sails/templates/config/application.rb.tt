@@ -1,11 +1,11 @@
-require 'tails'
-$LOAD_PATH.unshift Tails.root
+require 'sails'
+$LOAD_PATH.unshift Sails.root
 
 Bundler.require()
 
 require "app/services/handler"
 
-module Tails
+module Sails
   config.app_name = '<%= app_name %>'
   # Thrift Configs
   config.thrift_host = '127.0.0.1'
@@ -20,4 +20,4 @@ module Tails
   # config.cache_store = [:dalli_store, '127.0.0.1']
 end
 
-Tails.init()
+Sails.init()

@@ -1,3 +1,0 @@
-$:.unshift Tails.root.join("app/services/gen-rb")
-
-require "<%= app_name %>"

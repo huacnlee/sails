@@ -1,4 +1,4 @@
-module Tails
+module Sails
   class Service
     include ActiveSupport::Callbacks
     define_callbacks :action
@@ -14,8 +14,8 @@ module Tails
       run_callbacks :action do
         time = Time.now.to_f
 
-        Tails.logger.info "\nProcessing by \"#{method_name}\" at #{Time.now.to_s}" unless Tails.env.test?
-        Tails.logger.info "  Parameters: { #{args.map(&:inspect).join(', ')} }" unless Tails.env.test?
+        Sails.logger.info "\nProcessing by \"#{method_name}\" at #{Time.now.to_s}" unless Sails.env.test?
+        Sails.logger.info "  Parameters: { #{args.map(&:inspect).join(', ')} }" unless Sails.env.test?
 
         begin
           res = interface.send(method_name, *args, &block)
@@ -29,12 +29,12 @@ module Tails
           raise e
         rescue => e
           status = "Error 500"
-          Tails.logger.info "\"#{method_name}\" error : #{e.inspect}\n\n"
-          Tails.logger.info %Q(backtrace: #{e.backtrace.join("\n")}\n)
+          Sails.logger.info "\"#{method_name}\" error : #{e.inspect}\n\n"
+          Sails.logger.info %Q(backtrace: #{e.backtrace.join("\n")}\n)
           interface.raise_error(-1000)
         ensure
           elapsed = format('%.3f', (Time.now.to_f - time) * 1000)
-          Tails.logger.info "#{status} in (#{elapsed}ms).\n\n" unless Tails.env.test?
+          Sails.logger.info "#{status} in (#{elapsed}ms).\n\n" unless Sails.env.test?
         end
       end
     end
@@ -48,7 +48,7 @@ module Tails
     end
 
     class Interface
-      Dir["#{Tails.root.join("app/services")}/*_service.rb"].each do |f|
+      Dir["#{Sails.root.join("app/services")}/*_service.rb"].each do |f|
         next if 'base_service.rb' == File.basename(f)
         if File.basename(f) =~ /^(.*)_service.rb$/
           require f
@@ -66,7 +66,7 @@ module Tails
       end
 
       def logger
-        Tails.logger
+        Sails.logger
       end
     end
 
