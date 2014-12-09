@@ -35,6 +35,7 @@ module Sails
       end
       
       # Raise a Sails::Service::Exception (Thrift::Exception)
+      # if you want custom error you can override this method in you ApplicationService
       def raise_error(code, msg = nil)
         raise Exception.new(code: code, message: msg)
       end
@@ -47,14 +48,6 @@ module Sails
       # You can use this method in app/services
       def logger
         Sails.logger
-      end
-      
-      def args
-        @args ||= []
-      end
-
-      def initialize(*array)
-        args.concat array
       end
     end
   end
