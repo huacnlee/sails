@@ -1,0 +1,6 @@
+language: ruby
+
+rvm:
+  - 2.1.4
+
+script: rspec spec
