@@ -197,6 +197,7 @@ module Sails
 
     puts "Boot on: #{Sails.root}"
     puts "[#{Time.now}] Starting the Sails with NonBlocking..."
+    puts "Protocol: #{thrift_protocol_class.name}"
     puts "serve: 127.0.0.1:#{config.port}"
 
     begin
