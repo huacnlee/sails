@@ -31,8 +31,9 @@ describe 'Sails' do
     
     describe 'Real config' do
       it { expect(Sails.config.app_name).to eq 'hello' }
-      it { expect(Sails.config.thrift_host).to eq '1.1.1.1' }
-      it { expect(Sails.config.thrift_port).to eq 1000 }
+      it { expect(Sails.config.host).to eq '1.1.1.1' }
+      it { expect(Sails.config.port).to eq 1000 }
+      it { expect(Sails.config.protocol).to eq :binary }
       it { expect(Sails.config.i18n.default_locale).to eq :'zh-TW' }
       it { expect(Sails.config.autoload_paths).to include("app/bar") }
     end

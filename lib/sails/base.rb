@@ -6,9 +6,9 @@ Bundler.require()
 #
 #    module Sails
 #      config.app_name = 'you_app_name'
-#      config.thrift_host = "127.0.0.1"
-#      config.thrift_port = 7075
-#      config.thrift_processor = Thrift::YouAppName::Processor
+#      config.thrift.port = 7075
+#      config.thrift.processor = Thrift::YouAppName::Processor
+#      config.thrift.procotol = :binary
 #    
 #      config.autoload_paths += %W(app/workers)
 #    
@@ -154,17 +154,26 @@ module Sails
   def self.service
     @service ||= Sails::Service::Interface.new
   end
+  
+  def self.thrift_protocol_class
+    case config.protocol
+    when :compact
+      return ::Thrift::CompactProtocolFactory
+    else 
+      return ::Thrift::BinaryProtocolFactory
+    end
+  end
 
   def self.start_thread_pool_server!
-    transport = ::Thrift::ServerSocket.new(nil, config.thrift_thread_port)
+    transport = ::Thrift::ServerSocket.new(nil, config.thread_port)
     transport_factory = ::Thrift::BufferedTransportFactory.new
-    protocol_factory = ::Thrift::BinaryProtocolFactory.new
-    processor = config.thrift_processor.new(self.service)
+    protocol_factory = thrift_protocol_class.new
+    processor = config.thrift.processor.new(self.service)
     server = ::Thrift::ThreadPoolServer.new(processor, transport, transport_factory, protocol_factory, Setting.pool_size)
 
     puts "Boot on: #{Sails.root}"
     puts "[#{Time.now}] Starting the Sails with ThreadPool size: #{Setting.pool_size}..."
-    puts "serve: #{config.thrift_host}:#{config.thrift_thread_port}"
+    puts "serve: 127.0.0.1:#{config.thread_port}"
 
     begin
       server.serve
@@ -180,15 +189,15 @@ module Sails
   end
 
   def self.start_non_blocking_server!
-    transport = ::Thrift::ServerSocket.new(nil, config.thrift_port)
+    transport = ::Thrift::ServerSocket.new(nil, config.port)
     transport_factory = ::Thrift::FramedTransportFactory.new
-    protocol_factory = ::Thrift::BinaryProtocolFactory.new
-    processor = config.thrift_processor.new(self.service)
+    protocol_factory = thrift_protocol_class.new
+    processor = config.processor.new(self.service)
     server = ::Thrift::NonblockingServer.new(processor, transport, transport_factory)
 
     puts "Boot on: #{Sails.root}"
     puts "[#{Time.now}] Starting the Sails with NonBlocking..."
-    puts "serve: #{config.thrift_host}:#{config.thrift_port}"
+    puts "serve: 127.0.0.1:#{config.port}"
 
     begin
       server.serve

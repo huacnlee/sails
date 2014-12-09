@@ -7,8 +7,8 @@ $LOAD_PATH.unshift Sails.root
 # for test Sails config
 module Sails
   config.app_name = 'hello'
-  config.thrift_host = '1.1.1.1'
-  config.thrift_port = 1000
+  config.host = '1.1.1.1'
+  config.port = 1000
   config.i18n.default_locale = 'zh-TW'
   config.autoload_paths += %W(app/bar)
   config.cache_store = [:dalli_store, '127.0.0.1']

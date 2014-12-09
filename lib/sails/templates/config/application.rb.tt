@@ -8,9 +8,12 @@ require "app/services/handler"
 module Sails
   config.app_name = '<%= app_name %>'
   # Thrift Configs
-  config.thrift_host = '127.0.0.1'
-  config.thrift_port = 4000
-  config.thrift_processor = Thrift::<%= app_name.capitalize %>::Processor
+  config.port = 4000
+  
+  # Thrift protocol allows: :binary, :compact, default: :binary
+  # config.protocol = :binary 
+  
+  config.processor = Thrift::<%= app_name.capitalize %>::Processor
   
   # config.autoload_paths += %W(app/workers)
   
