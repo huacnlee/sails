@@ -59,3 +59,8 @@ puts @client.ping()
 ## API Documents
 
 http://www.rubydoc.info/github/huacnlee/sails
+
+
+## TODO
+
+- Reload without restart

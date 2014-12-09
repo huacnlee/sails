@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sails (0.1.0)
+    sails (0.1.1)
       activesupport (>= 3.2.0)
       thor
       thrift (>= 0.9.0)
@@ -15,6 +15,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    dalli (2.7.1)
     diff-lcs (1.2.5)
     i18n (0.6.11)
     json (1.8.1)
@@ -41,5 +42,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dalli
   rspec
   sails!

@@ -27,7 +27,20 @@ describe 'Sails' do
     it 'should work' do
       expect(Sails.config).to be_a(Hash)
       expect(Sails.config.autoload_paths).to be_a(Array)
-      expect(Sails.config.app_name).to eq "Sails"
+    end
+    
+    describe 'Real config' do
+      it { expect(Sails.config.app_name).to eq 'hello' }
+      it { expect(Sails.config.thrift_host).to eq '1.1.1.1' }
+      it { expect(Sails.config.thrift_port).to eq 1000 }
+      it { expect(Sails.config.i18n.default_locale).to eq :'zh-TW' }
+      it { expect(Sails.config.autoload_paths).to include("app/bar") }
     end
   end
+  
+  describe '#cache' do
+    it { expect(Sails.cache).to be_a(ActiveSupport::Cache::DalliStore) }
+    it { expect(Sails.cache).to respond_to(:read, :write, :delete, :clear) }
+  end
+  
 end
