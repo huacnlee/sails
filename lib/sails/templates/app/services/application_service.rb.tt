@@ -1,6 +1,8 @@
-module ApplicationService
-  extend ActiveSupport::Concern
-  
+class ApplicationService < Sails::Service::Base
   # def require_user!(user_id, access_token)
+  # end
+  
+  # def raise_error(code, msg = nil)
+  #   raise YouCustomThriftException.new(code: code, message: msg)
   # end
 end

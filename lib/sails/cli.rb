@@ -63,7 +63,7 @@ module Sails
     
     desc "console", "Enter Sails console"
     def console
-      system "pry -I config/application.rb -r ./config/application.rb"
+      system "irb -r ./config/application.rb"
     end
     
     desc "version", "Show Sails version"

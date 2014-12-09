@@ -1,8 +1,18 @@
-require "sails/version"
-require "sails/base"
+require 'rubygems'
+require 'bundler/setup'
+require 'active_support/all'
+require 'i18n'
+require 'thrift'
+require 'yaml'
 require "sails/rails"
-require "sails/daemon"
-require "sails/cli"
-require "sails/service"
+require "sails/base"
 
-Sails.init()
+module Sails
+  extend ActiveSupport::Autoload
+  
+  autoload :Config
+  autoload :Version
+  autoload :Service
+  autoload :CLI
+  autoload :Daemon
+end

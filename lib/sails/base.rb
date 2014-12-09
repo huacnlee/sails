@@ -1,10 +1,3 @@
-require 'rubygems'
-require 'bundler/setup'
-require 'active_support/all'
-require 'i18n'
-require 'thrift'
-require 'yaml'
-
 Bundler.require()
 
 # Sails 
@@ -27,10 +20,8 @@ Bundler.require()
 #
 module Sails
   extend ActiveSupport::Autoload
-
-  class Config
-    include ActiveSupport::Configurable
-  end
+  
+  autoload :Config
 
   # Sails.config
   #
@@ -49,14 +40,6 @@ module Sails
   def self.config
     return @config if defined?(@config)
     @config = Config.new.config
-    @config.app_name = "Sails"
-    @config.cache_store = [:memory_store]
-    @config.autoload_paths = %W(app/models app/models/concerns app/workers app/services app/services/concerns lib)
-    @config.i18n = I18n
-    @config.i18n.load_path += Dir[Sails.root.join('config', 'locales', '*.{rb,yml}').to_s]
-    @config.i18n.default_locale = :en
-    @config.thrift_processor = nil
-    @config
   end
 
   # Sails.cache
@@ -169,7 +152,7 @@ module Sails
   end
 
   def self.service
-    @service ||= Sails::Service.new
+    @service ||= Sails::Service::Interface.new
   end
 
   def self.start_thread_pool_server!
@@ -236,3 +219,5 @@ module Sails
     end
   end
 end
+
+Sails.init()
