@@ -63,6 +63,6 @@ http://www.rubydoc.info/github/huacnlee/sails
 
 ## TODO
 
-- [] Reload without restart;
-- [] Scaffold generator;
-- [] Multi processes;
+- [ ] Reload without restart;
+- [ ] Scaffold generator;
+- [ ] Multi processes;
