@@ -169,7 +169,7 @@ module Sails
     transport_factory = ::Thrift::BufferedTransportFactory.new
     protocol_factory = thrift_protocol_class.new
     processor = config.thrift.processor.new(self.service)
-    server = ::Thrift::ThreadPoolServer.new(processor, transport, transport_factory, protocol_factory, Setting.pool_size)
+    server = ::Thrift::ThreadPoolServer.new(processor, transport, transport_factory, protocol_factory, config.thread_size)
 
     puts "Boot on: #{Sails.root}"
     puts "[#{Time.now}] Starting the Sails with ThreadPool size: #{Setting.pool_size}..."
@@ -193,7 +193,7 @@ module Sails
     transport_factory = ::Thrift::FramedTransportFactory.new
     protocol_factory = thrift_protocol_class.new
     processor = config.processor.new(self.service)
-    server = ::Thrift::NonblockingServer.new(processor, transport, transport_factory)
+    server = ::Thrift::NonblockingServer.new(processor, transport, transport_factory, protocol_factory, config.thread_size)
 
     puts "Boot on: #{Sails.root}"
     puts "[#{Time.now}] Starting the Sails with NonBlocking..."

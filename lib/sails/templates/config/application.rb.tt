@@ -13,6 +13,9 @@ module Sails
   # Thrift protocol allows: :binary, :compact, default: :binary
   # config.protocol = :binary 
   
+  # Number of threads, default: 20
+  # config.thread_size = 20
+  
   config.processor = Thrift::<%= app_name.capitalize %>::Processor
   
   # config.autoload_paths += %W(app/workers)

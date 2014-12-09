@@ -17,6 +17,7 @@ module Sails
       config.port = 4000
       config.thread_port = 4001
       config.processor = nil
+      config.thread_size = 20
       config.protocol = :binary
     end
   end
