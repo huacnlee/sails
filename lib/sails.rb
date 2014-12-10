@@ -36,4 +36,5 @@ module Sails
   autoload :Service
   autoload :CLI
   autoload :Daemon
+  autoload :Console
 end

@@ -160,6 +160,12 @@ module Sails
     @service ||= Sails::Service::Interface.new
   end
   
+  # Force reload Sails cache classes in config.autoload_paths
+  def self.reload!
+    @service = nil
+    ActiveSupport::Dependencies.clear
+  end
+  
   def self.thrift_protocol_class
     case config.protocol
     when :compact

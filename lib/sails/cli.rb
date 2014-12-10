@@ -72,7 +72,7 @@ module Sails
     
     desc "console", "Enter Sails console"
     def console
-      system "irb -r ./config/application.rb"
+      Sails::Console.start(Sails.root.join("config/application.rb"))
     end
     
     desc "version", "Show Sails version"
