@@ -156,9 +156,9 @@ module Sails
   def self.reload!(opts = {})
     force = opts[:force] || false
     if force || config.cache_classes == false
-      @service = nil
+      # @service = nil
       ActiveSupport::Dependencies.clear
-      reload_server!
+      # reload_server!
     end
   end
 
