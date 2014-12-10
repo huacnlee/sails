@@ -130,14 +130,6 @@ module Sails
     @inited = true
   end
 
-  def self.start!(type)
-    if type == "thread"
-      start_thread_pool_server!
-    else
-      start_non_blocking_server!
-    end
-  end
-
   # Sails.service
   #
   # return a instance of Sails Service layer
@@ -164,6 +156,23 @@ module Sails
   def self.reload!
     @service = nil
     ActiveSupport::Dependencies.clear
+    reload_server!
+  end
+
+  def self.reload_server!
+    if @server
+      new_processor = config.processor.new(self.service)
+      @server.instance_variable_set(:@processor, new_processor)
+    end
+  end
+  
+  def self.start!(type)
+    @server_type = type
+    if @server_type == "thread"
+      start_thread_pool_server!
+    else
+      start_non_blocking_server!
+    end
   end
   
   def self.thrift_protocol_class
@@ -183,15 +192,15 @@ module Sails
     transport = ::Thrift::ServerSocket.new(nil, config.thread_port)
     transport_factory = ::Thrift::BufferedTransportFactory.new
     protocol_factory = thrift_protocol_class.new
-    processor = config.thrift.processor.new(self.service)
-    server = ::Thrift::ThreadPoolServer.new(processor, transport, transport_factory, protocol_factory, config.thread_size)
+    processor = config.processor.new(self.service)
+    @server = ::Thrift::ThreadPoolServer.new(processor, transport, transport_factory, protocol_factory, config.thread_size)
 
     puts "Boot on: #{Sails.root}"
     puts "[#{Time.now}] Starting the Sails with ThreadPool size: #{Setting.pool_size}..."
     puts "serve: 127.0.0.1:#{config.thread_port}"
 
     begin
-      server.serve
+      @server.serve
     rescue => e
       puts "Start thrift server exception! \n  #{e.inspect}"
       puts e.backtrace
@@ -209,7 +218,7 @@ module Sails
     transport_factory = ::Thrift::FramedTransportFactory.new
     protocol_factory = thrift_protocol_class.new
     processor = config.processor.new(self.service)
-    server = ::Thrift::NonblockingServer.new(processor, transport, transport_factory, protocol_factory, config.thread_size)
+    @server = ::Thrift::NonblockingServer.new(processor, transport, transport_factory, protocol_factory, config.thread_size)
 
     puts "Boot on: #{Sails.root}"
     puts "[#{Time.now}] Starting the Sails with NonBlocking..."
@@ -217,7 +226,7 @@ module Sails
     puts "serve: 127.0.0.1:#{config.port}"
 
     begin
-      server.serve
+      @server.serve
     rescue => e
       puts "Start thrift server exception! \n  #{e.inspect}"
       puts e.backtrace

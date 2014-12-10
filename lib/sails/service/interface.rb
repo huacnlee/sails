@@ -7,7 +7,7 @@ module Sails
         @services = []
         Dir["#{Sails.root.join("app/services")}/*_service.rb"].each do |f|
           if File.basename(f) =~ /^(.*)_service.rb$/
-            load f
+            require f
             mtd = $1.dup
             klass_name = "#{mtd.camelize}Service"
             @services << klass_name.constantize.new
@@ -15,7 +15,7 @@ module Sails
         end
         define_service_methods!
       end
-      
+
       private
       def define_service_methods!
         @services.each do |instance|
