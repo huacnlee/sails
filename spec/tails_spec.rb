@@ -45,4 +45,17 @@ describe 'Sails' do
     it { expect(Sails.cache).to respond_to(:read, :write, :delete, :clear) }
   end
   
+  describe '#thrift_protocol_class' do
+    it 'should work' do
+      allow(Sails.config).to receive(:protocol).and_return(:binary)
+      expect(Sails.thrift_protocol_class).to eq ::Thrift::BinaryProtocolFactory
+      allow(Sails.config).to receive(:protocol).and_return(:compact)
+      expect(Sails.thrift_protocol_class).to eq ::Thrift::CompactProtocolFactory
+      allow(Sails.config).to receive(:protocol).and_return(:json)
+      expect(Sails.thrift_protocol_class).to eq ::Thrift::JsonProtocolFactory
+      allow(Sails.config).to receive(:protocol).and_return(:xxx)
+      expect(Sails.thrift_protocol_class).to eq ::Thrift::BinaryProtocolFactory
+    end
+  end
+  
 end
