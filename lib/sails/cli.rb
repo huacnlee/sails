@@ -19,6 +19,9 @@ module Sails
       end
     }
 
+    # sails start
+    #
+    # Start a thrift app server
     option :daemon, type: :boolean, default: false
     option :mode, default: 'nonblocking'
     desc "start", "Start Thrift server"
@@ -27,13 +30,19 @@ module Sails
       Sails::Daemon.start_process(daemon: options[:daemon])
     end
 
+    # sails stop
+    #
+    # Stop thrift app server
     option :mode, default: 'nonblocking'
     desc "stop", "Stop Thrift server"
     def stop()
       Sails::Daemon.init(mode: options[:mode])
       Sails::Daemon.stop_process
     end
-
+    
+    # sails restart
+    #
+    # Restart thrift app server
     option :mode, default: 'nonblocking'
     desc "restart", "Restart Thrift server"
     def restart()

@@ -1,23 +1,5 @@
 Bundler.require()
 
-# Sails 
-#
-# You can custom Sails configs in config/application.rb
-#
-#    module Sails
-#      config.app_name = 'you_app_name'
-#      config.thrift.port = 7075
-#      config.thrift.processor = Thrift::YouAppName::Processor
-#      config.thrift.procotol = :binary
-#    
-#      config.autoload_paths += %W(app/workers)
-#    
-#      config.i18n.default_locale = 'zh-CN'
-#    
-#      # cache store
-#      config.cache_store = [:dalli_store, '127.0.0.1' }]
-#    end
-#
 module Sails
   extend ActiveSupport::Autoload
   
@@ -77,11 +59,13 @@ module Sails
   # Sails.root
   #
   # This method returns a Pathname object which handles paths starting with a / as absolute (starting from the root of the filesystem). Compare:
+  #
   # For example:
   #   >> Sails.root
   #   => #<Pathname:/some/path/to/project>
   #   >> Sails.root + "file"
   #   => #<Pathname:/some/path/to/project/file>
+  #
   def self.root
     @root ||= Pathname.new(Dir.pwd)
   end
@@ -94,12 +78,14 @@ module Sails
   #
   # returns a string representing the current Sails environment.
   # This will read from ENV['RAILS_ENV'] like Rails
+  #
   # For example:
   #
   #     Sails.env # in development mode
   #     => "development"
   #     Sails.env.development?
   #     => true
+  #
   def self.env
     @env ||= ActiveSupport::StringInquirer.new(ENV['RAILS_ENV'].presence || 'development')
   end
@@ -111,6 +97,7 @@ module Sails
   #
   #     Sails.logger.info "Hello world"
   #     Sails.logger.error "Hello world"
+  #
   def self.logger
     return @logger if defined?(@logger)
     @logger = Logger.new(File.join(Sails.root, "log/#{self.env}.log"))
@@ -151,6 +138,24 @@ module Sails
     end
   end
 
+  # Sails.service
+  #
+  # return a instance of Sails Service layer
+  #
+  # for example:
+  #
+  #     class UsersService < Sails::Service::Base
+  #       def check_name_exist?(name)
+  #         User.check_name_exist?(name)
+  #       end
+  #     end
+  #
+  #     class UsersServiceTest
+  #       def test_check_name_exist?
+  #         assert_equal(Sails.service.check_name_exist?(name), true) 
+  #       end
+  #     end
+  #
   def self.service
     @service ||= Sails::Service::Interface.new
   end
@@ -159,11 +164,15 @@ module Sails
     case config.protocol
     when :compact
       return ::Thrift::CompactProtocolFactory
+    when :json
+      return ::Thrift::JsonProtocolFactory
     else 
       return ::Thrift::BinaryProtocolFactory
     end
   end
 
+  # Start Thrift Server with Threaded mode
+  #
   def self.start_thread_pool_server!
     transport = ::Thrift::ServerSocket.new(nil, config.thread_port)
     transport_factory = ::Thrift::BufferedTransportFactory.new
@@ -188,6 +197,7 @@ module Sails
     end
   end
 
+  # Start Thrift Server with Event drive mode
   def self.start_non_blocking_server!
     transport = ::Thrift::ServerSocket.new(nil, config.port)
     transport_factory = ::Thrift::FramedTransportFactory.new
