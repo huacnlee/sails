@@ -1,4 +1,8 @@
-## 0.1.1
+## 0.1.2 
+
+- `sails restart` use kill -USR2 signal, not kill master process.
+
+## 0.1.1 / 2014-12-10
 
 - Add `sails s`, `sails c` commands.
 - Refactor service layer, use class to instead module.

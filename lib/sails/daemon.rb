@@ -28,7 +28,7 @@ module Sails
       def start_process(options = {})
         old_pid = read_pid
         if old_pid != nil
-          puts "Current have #{app_name} process in running on pid #{old_pid}"
+          Sails.logger.info "Current have #{app_name} process in running on pid #{old_pid}"
           return
         end
 
@@ -38,11 +38,21 @@ module Sails
           f.puts @master_pid
         end
         
-        puts "Started #{app_name} on pid: #{@master_pid}"
+        Sails.logger.info "Started #{app_name} on pid: #{@master_pid}"
 
         if options[:daemon] == false
           Process.waitpid(@master_pid)
         end
+      end
+      
+      def restart_process(options = {})
+        old_pid = read_pid
+        if old_pid == nil
+          Sails.logger.info "#{app_name} process not found on pid #{old_pid}"
+          return
+        end
+        
+        Process.kill("USR2", old_pid)
       end
       
       def fork_master_process!
@@ -56,7 +66,8 @@ module Sails
           }
           
           Signal.trap("USR2") {
-            Process.kill("USR2", @child_pid)
+            puts @child_pid.inspect
+            Process.kill("QUIT", @child_pid)
           }
   
           loop do
@@ -86,17 +97,17 @@ module Sails
       def stop_process
         pid = read_pid
         if pid == nil
-          puts "#{app_name} process not found, pid #{pid}"
+          Sails.logger.info "#{app_name} process not found, pid #{pid}"
           return
         end
 
-        print "Stopping #{app_name} with pid: #{pid}..."
+        Sails.logger.info "Stopping #{app_name} with pid: #{pid}..."
         begin
           Process.kill("QUIT", pid)
         ensure
           File.delete(pid_file)
         end
-        puts " [Done]"
+        Sails.logger.info " [Done]"
       end
     end
   end

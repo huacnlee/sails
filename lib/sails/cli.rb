@@ -47,8 +47,7 @@ module Sails
     desc "restart", "Restart Thrift server"
     def restart()
       Sails::Daemon.init(mode: options[:mode])
-      Sails::Daemon.stop_process
-      Sails::Daemon.start_process(daemon: true)
+      Sails::Daemon.restart_process
     end
 
     desc "new APP_NAME", "Create a project"

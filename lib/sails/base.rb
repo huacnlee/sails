@@ -124,7 +124,7 @@ module Sails
 
     require "sails/service"
 
-    puts "ENV: #{Sails.env}"
+    logger.info "ENV: #{Sails.env}"
 
     load_initialize
     @inited = true
@@ -198,15 +198,15 @@ module Sails
     processor = config.processor.new(self.service)
     @server = ::Thrift::ThreadPoolServer.new(processor, transport, transport_factory, protocol_factory, config.thread_size)
 
-    puts "Boot on: #{Sails.root}"
-    puts "[#{Time.now}] Starting the Sails with ThreadPool size: #{Setting.pool_size}..."
-    puts "serve: 127.0.0.1:#{config.thread_port}"
+    logger.info "Boot on: #{Sails.root}"
+    logger.info "[#{Time.now}] Starting the Sails with ThreadPool size: #{Setting.pool_size}..."
+    logger.info "serve: 127.0.0.1:#{config.thread_port}"
 
     begin
       @server.serve
     rescue => e
-      puts "Start thrift server exception! \n  #{e.inspect}"
-      puts e.backtrace
+      logger.error "Start thrift server exception! \n  #{e.inspect}"
+      logger.error e.backtrace
 
       if self.env != "development"
         sleep 2
@@ -223,16 +223,16 @@ module Sails
     processor = config.processor.new(self.service)
     @server = ::Thrift::NonblockingServer.new(processor, transport, transport_factory, protocol_factory, config.thread_size)
 
-    puts "Boot on: #{Sails.root}"
-    puts "[#{Time.now}] Starting the Sails with NonBlocking..."
-    puts "Protocol: #{thrift_protocol_class.name}"
-    puts "serve: 127.0.0.1:#{config.port}"
+    logger.info "Boot on: #{Sails.root}"
+    logger.info "[#{Time.now}] Starting the Sails with NonBlocking..."
+    logger.info "Protocol: #{thrift_protocol_class.name}"
+    logger.info "serve: 127.0.0.1:#{config.port}"
 
     begin
       @server.serve
     rescue => e
-      puts "Start thrift server exception! \n  #{e.inspect}"
-      puts e.backtrace
+      logger.error "Start thrift server exception! \n  #{e.inspect}"
+      logger.error e.backtrace
 
       if self.env != "development"
         sleep 2
