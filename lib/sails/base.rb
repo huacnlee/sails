@@ -103,7 +103,12 @@ module Sails
     log_file = File.join(Sails.root, "log/#{self.env}.log")
     @logger = Logger.new(log_file)
     @logger.formatter = proc { |severity, datetime, progname, msg|
-      self.stdout_logger.info msg if Sails.env.development?
+      if Sails.env.development?
+        begin
+          self.stdout_logger.info(msg)
+        rescue => e
+        end
+      end
       "#{msg}\n"
     }
     @logger
