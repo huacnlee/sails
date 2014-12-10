@@ -56,6 +56,17 @@ puts @client.ping()
 => Ping pong
 ```
 
+## Deploy
+
+```
+$ sails s --daemon
+$ ps aux
+jason            2408   0.1  0.2  2648176  13532 s003  S    12:14下午   0:00.02 you_sails_app    
+jason            2407   0.0  0.0  2604916   1016 s003  S    12:14下午   0:00.00 you_sails_app [master]
+$ sails restart
+$ sails stop
+```
+
 ## API Documents
 
 http://www.rubydoc.info/github/huacnlee/sails
@@ -65,4 +76,4 @@ http://www.rubydoc.info/github/huacnlee/sails
 
 - [ ] Reload without restart;
 - [ ] Scaffold generator;
-- [ ] Multi processes;
+- [*] Multi processes;

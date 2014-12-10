@@ -26,27 +26,63 @@ module Sails
       end
 
       def start_process(options = {})
-        $PROGRAM_NAME = self.app_name
         old_pid = read_pid
         if old_pid != nil
           puts "Current have #{app_name} process in running on pid #{old_pid}"
           return
         end
 
-        pid = fork do
-          Sails.start!(self.mode)
-        end
+        # start master process
+        @master_pid = fork_master_process!
         File.open(pid_file, "w+") do |f|
-          f.puts pid
+          f.puts @master_pid
         end
-
-        puts "Started #{app_name} on pid: #{pid}"
+        
+        puts "Started #{app_name} on pid: #{@master_pid}"
 
         if options[:daemon] == false
-          Process.waitpid(pid)
+          Process.waitpid(@master_pid)
         end
       end
-
+      
+      def fork_master_process!
+        fork do
+          $PROGRAM_NAME = self.app_name + " [master]"
+          @child_pid = fork_child_process!
+  
+          Signal.trap("QUIT") { 
+            Process.kill("QUIT", @child_pid)
+            exit
+          }
+          
+          Signal.trap("USR2") {
+            Process.kill("USR2", @child_pid)
+          }
+  
+          loop do
+            sleep 1
+            begin
+              Process.getpgid(@child_pid)
+            rescue Errno::ESRCH => e
+              # puts "Child not found, will restart..."
+              @child_pid = fork_child_process!
+            end
+          end
+        end
+      end
+      
+      def fork_child_process!
+        fork do
+          $PROGRAM_NAME = self.app_name
+          Sails.start!(self.mode)
+          
+          Signal.trap("USR2") {
+            # TODO: reload Sails in current process
+            exit
+          }
+        end
+      end
+      
       def stop_process
         pid = read_pid
         if pid == nil
