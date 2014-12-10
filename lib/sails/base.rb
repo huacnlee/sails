@@ -117,7 +117,7 @@ module Sails
 
     ActiveSupport::Dependencies.autoload_paths += Sails.config.autoload_paths
 
-    env_file = self.root.join('config/environments/',Sails.env)
+    env_file = self.root.join('config/environments/',Sails.env + ".rb")
     if File.exist?(env_file)
       require env_file
     end
@@ -153,10 +153,13 @@ module Sails
   end
   
   # Force reload Sails cache classes in config.autoload_paths
-  def self.reload!
-    @service = nil
-    ActiveSupport::Dependencies.clear
-    reload_server!
+  def self.reload!(opts = {})
+    force = opts[:force] || false
+    if force || config.cache_classes == false
+      @service = nil
+      ActiveSupport::Dependencies.clear
+      reload_server!
+    end
   end
 
   def self.reload_server!

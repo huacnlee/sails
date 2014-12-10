@@ -13,6 +13,7 @@ module Sails
       config.i18n = I18n
       config.i18n.load_path += Dir[Sails.root.join('config', 'locales', '*.{rb,yml}').to_s]
       config.i18n.default_locale = :en
+      config.cache_classes = false
       
       config.port = 4000
       config.thread_port = 4001
