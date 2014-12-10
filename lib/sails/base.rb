@@ -210,13 +210,8 @@ module Sails
     begin
       @server.serve
     rescue => e
-      logger.error "Start thrift server exception! \n  #{e.inspect}"
-      logger.error e.backtrace
-
-      if self.env != "development"
-        sleep 2
-        retry
-      end
+      puts "Start thrift server exception! \n  #{e.inspect}"
+      puts e.backtrace
     end
   end
 
@@ -236,13 +231,8 @@ module Sails
     begin
       @server.serve
     rescue => e
-      logger.error "Start thrift server exception! \n  #{e.inspect}"
-      logger.error e.backtrace
-
-      if self.env != "development"
-        sleep 2
-        retry
-      end
+      puts "Start thrift server exception! \n  #{e.inspect}"
+      puts e.backtrace
     end
   end
   
