@@ -100,7 +100,11 @@ module Sails
   #
   def self.logger
     return @logger if defined?(@logger)
-    @logger = Logger.new(File.join(Sails.root, "log/#{self.env}.log"))
+    log_file = File.join(Sails.root, "log/#{self.env}.log")
+    unless File.exist?(log_file)
+      log_file = STDOUT
+    end
+    @logger = Logger.new(log_file)
     @logger.formatter = proc { |severity, datetime, progname, msg|
       self.stdout_logger.info msg if !Sails.env.test?
       "#{msg}\n"

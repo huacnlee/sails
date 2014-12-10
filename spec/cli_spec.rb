@@ -24,8 +24,7 @@ describe 'Sails::CLI' do
     it { expect(cli).to respond_to(:restart) }
     it {
       # expect(Sails::Daemon).to receive(:init)
-      expect(Sails::Daemon).to receive(:stop_process)
-      expect(Sails::Daemon).to receive(:start_process)
+      expect(Sails::Daemon).to receive(:restart_process)
       cli.restart
     }
   end
