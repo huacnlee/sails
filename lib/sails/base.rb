@@ -106,7 +106,7 @@ module Sails
     end
     @logger = Logger.new(log_file)
     @logger.formatter = proc { |severity, datetime, progname, msg|
-      self.stdout_logger.info msg if !Sails.env.test?
+      self.stdout_logger.info msg if Sails.env.development?
       "#{msg}\n"
     }
     @logger
