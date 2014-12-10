@@ -76,4 +76,4 @@ http://www.rubydoc.info/github/huacnlee/sails
 
 - [ ] Reload without restart;
 - [ ] Scaffold generator;
-- [*] Multi processes;
+- [X] Multi processes;
