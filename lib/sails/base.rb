@@ -2,7 +2,7 @@ Bundler.require()
 
 module Sails
   extend ActiveSupport::Autoload
-  
+
   autoload :Config
 
   # Sails.config
@@ -69,7 +69,7 @@ module Sails
   def self.root
     @root ||= Pathname.new(Dir.pwd)
   end
-  
+
   def self.root=(root)
     @root = Pathname.new(root)
   end
@@ -103,21 +103,15 @@ module Sails
     log_file = File.join(Sails.root, "log/#{self.env}.log")
     @logger = Logger.new(log_file)
     @logger.formatter = proc { |severity, datetime, progname, msg|
-      if Sails.env.development?
-        begin
-          self.stdout_logger.info(msg)
-        rescue => e
-        end
-      end
       "#{msg}\n"
     }
     @logger
   end
 
   def self.init
-    $:.unshift self.root.join("lib")
     # init root
     return false if @inited == true
+    $:.unshift self.root.join("lib")
 
     self.root
 
@@ -129,8 +123,6 @@ module Sails
     end
 
     require "sails/service"
-
-    logger.info "ENV: #{Sails.env}"
 
     load_initialize
     @inited = true
@@ -150,14 +142,14 @@ module Sails
   #
   #     class UsersServiceTest
   #       def test_check_name_exist?
-  #         assert_equal(Sails.service.check_name_exist?(name), true) 
+  #         assert_equal(Sails.service.check_name_exist?(name), true)
   #       end
   #     end
   #
   def self.service
     @service ||= Sails::Service::Interface.new
   end
-  
+
   # Force reload Sails cache classes in config.autoload_paths
   def self.reload!(opts = {})
     force = opts[:force] || false
@@ -175,8 +167,10 @@ module Sails
       @server.instance_variable_set(:@processor, new_processor)
     end
   end
-  
+
   def self.start!(type)
+    logger.info "ENV: #{Sails.env}"
+
     @server_type = type
     if @server_type == "thread"
       start_thread_pool_server!
@@ -184,14 +178,14 @@ module Sails
       start_non_blocking_server!
     end
   end
-  
+
   def self.thrift_protocol_class
     case config.protocol
     when :compact
       return ::Thrift::CompactProtocolFactory
     when :json
       return ::Thrift::JsonProtocolFactory
-    else 
+    else
       return ::Thrift::BinaryProtocolFactory
     end
   end
@@ -236,16 +230,6 @@ module Sails
       puts "Start thrift server exception! \n  #{e.inspect}"
       puts e.backtrace
     end
-  end
-  
-  private
-  def self.stdout_logger
-    return @stdout_logger if defined?(@stdout_logger)
-    @stdout_logger = Logger.new(STDOUT)
-    @stdout_logger.formatter = proc { |severity, datetime, progname, msg|
-      "#{msg}\n"
-    }
-    @stdout_logger
   end
 
   def self.load_initialize
