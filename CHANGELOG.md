@@ -1,6 +1,7 @@
 ## 0.1.2 
 
 - `sails restart` use kill -USR2 signal, not kill master process.
+- Use tail log file to instead of direct stdout.
 
 ## 0.1.1 / 2014-12-10
 
