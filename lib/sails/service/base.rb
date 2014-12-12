@@ -7,8 +7,6 @@ module Sails
       define_callbacks :action
 
       set_callback :action, :before do |object|
-        # TODO: only reload on files changed
-        Sails.reload!
       end
 
       set_callback :action, :after do |object|

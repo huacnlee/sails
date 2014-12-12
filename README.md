@@ -1,7 +1,7 @@
 Sails
 =====
 
-Sails, create [Thrift](thrift.apache.org) app server like Rails.
+Sails, create [Thrift](http://thrift.apache.org) app server like Rails.
 
 [![Build Status](https://travis-ci.org/huacnlee/sails.svg)](https://travis-ci.org/huacnlee/sails) [![Gem Version](https://badge.fury.io/rb/sails.svg)](http://badge.fury.io/rb/sails)
 
