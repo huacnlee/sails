@@ -14,8 +14,11 @@ module Sails
   config.cache_store = [:dalli_store, '127.0.0.1']
 end
 
-RSpec.configure do |config|
+Dir["./spec/support/**/*.rb"].each { |f| require f }
 
+RSpec.configure do |config|
+  config.include ServiceSupport, file_path: /spec\/service/
+  
   config.before(:each) do
   end
 

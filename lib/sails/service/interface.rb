@@ -27,7 +27,15 @@ module Sails
         end
       end
       
+      def set_params_with_method_args(instance, method_name, args)
+        method_args = instance.method(method_name.to_sym).parameters.map { |arg| arg[1] }
+        method_args.each_with_index do |arg, idx|
+          instance.params[arg] = args[idx]
+        end
+      end
+
       def run_action(instance, method_name, *args, &block)
+        set_params_with_method_args(instance, method_name, args)
         instance.run_callbacks :action do
           time = Time.now.to_f
 
@@ -38,17 +46,22 @@ module Sails
             res = instance.send(method_name, *args, &block)
             status = "Completed"
             return res
-          rescue ActiveRecord::RecordNotFound => e
-            status = "Not Found"
-            instance.raise_error(404)
           rescue Thrift::Exception => e
             status = "Failed #{e.try(:code)}"
             raise e
           rescue => e
-            status = "Error 500"
+            puts "------- #{e.inspect}"
+            if defined?(ActiveRecord) && e.is_a?(ActiveRecord::RecordNotFound)
+              status = "Not Found"
+              code = 404
+            else
+              status = "Error 500"
+              code = 500
+            end
+            
             Sails.logger.info "\"#{method_name}\" error : #{e.inspect}\n\n"
             Sails.logger.info %Q(backtrace: #{e.backtrace.join("\n")}\n)
-            instance.raise_error(500)
+            instance.raise_error(code)
           ensure
             elapsed = format('%.3f', (Time.now.to_f - time) * 1000)
             Sails.logger.info "#{status} in (#{elapsed}ms).\n\n" unless Sails.env.test?

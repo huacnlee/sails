@@ -1,3 +1,8 @@
+## 0.1.3
+
+- Add `before_action` support for Service layout;
+- Add `params` like same name in ActionController for Service layout;
+
 ## 0.1.2 
 
 - `sails restart` use kill -USR2 signal, not kill master process.

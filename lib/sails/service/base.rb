@@ -2,16 +2,7 @@ module Sails
   module Service
     # Like ActionController::Base
     class Base
-      include ActiveSupport::Callbacks
-      
-      define_callbacks :action
-
-      set_callback :action, :before do |object|
-      end
-
-      set_callback :action, :after do |object|
-        ActiveRecord::Base.clear_active_connections! if defined?(ActiveRecord::Base)
-      end
+      include Callbacks
       
       class << self
         def internal_methods
@@ -32,6 +23,22 @@ module Sails
             Set.new(methods.reject { |method| method =~ /_one_time_conditions/ })
           end
         end
+      end
+      
+      # action params to Hash
+      #
+      # example:
+      # 
+      #    class FooService < Sails::Service::Base
+      #       def foo(name, age)
+      #         # you can use params in any instance methods
+      #         puts params[:name]
+      #         puts params[:age]
+      #       end
+      #    end
+      #
+      def params
+        @params ||= {}
       end
       
       # Raise a Sails::Service::Exception (Thrift::Exception)

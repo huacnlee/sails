@@ -6,5 +6,6 @@ module Sails
     autoload :Config
     autoload :Exception
     autoload :Interface
+    autoload :Callbacks
   end
 end
