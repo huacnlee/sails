@@ -50,7 +50,6 @@ module Sails
             status = "Failed #{e.try(:code)}"
             raise e
           rescue => e
-            puts "------- #{e.inspect}"
             if defined?(ActiveRecord) && e.is_a?(ActiveRecord::RecordNotFound)
               status = "Not Found"
               code = 404
