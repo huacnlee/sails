@@ -5,6 +5,7 @@ Sails.root = File.expand_path("../dummy", __FILE__)
 $LOAD_PATH.unshift Sails.root
 
 # for test Sails config
+I18n.config.enforce_available_locales = false
 module Sails
   config.app_name = 'hello'
   config.host = '1.1.1.1'
