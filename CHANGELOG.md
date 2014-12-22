@@ -1,3 +1,7 @@
+## 0.1.3 / 2014-12-22
+
+- Fix zombie process on restart in some Linux systems.
+
 ## 0.1.2 / 2014-12-17
 
 - `sails restart` use kill -USR2 signal, not kill master process.

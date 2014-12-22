@@ -44,6 +44,8 @@ module Sails
           log_file = Sails.root.join("log/#{Sails.env}.log")
           system "tail -f #{log_file}"
           Process.waitpid(@master_pid)
+        else
+          exit
         end
       end
 
@@ -59,7 +61,7 @@ module Sails
 
       def fork_master_process!
         fork do
-          $PROGRAM_NAME = self.app_name + " [master]"
+          $PROGRAM_NAME = self.app_name + " [sails master]"
           @child_pid = fork_child_process!
 
           Signal.trap("QUIT") {
@@ -68,8 +70,7 @@ module Sails
           }
 
           Signal.trap("USR2") {
-            puts @child_pid.inspect
-            Process.kill("QUIT", @child_pid)
+            Process.kill("USR2", @child_pid)
           }
 
           loop do
@@ -77,7 +78,6 @@ module Sails
             begin
               Process.getpgid(@child_pid)
             rescue Errno::ESRCH => e
-              # puts "Child not found, will restart..."
               @child_pid = fork_child_process!
             end
           end
@@ -85,15 +85,21 @@ module Sails
       end
 
       def fork_child_process!
-        fork do
-          $PROGRAM_NAME = self.app_name
-          Sails.start!(self.mode)
-
+        pid = fork do
+          $PROGRAM_NAME = self.app_name + " [sails child]"
+          Signal.trap("QUIT") {
+            exit
+          }
+          
           Signal.trap("USR2") {
             # TODO: reload Sails in current process
             exit
           }
+          Sails.start!(self.mode)          
         end
+        # http://ruby-doc.org/core-1.9.3/Process.html#detach-method
+        Process.detach(pid)
+        return pid
       end
 
       def stop_process
