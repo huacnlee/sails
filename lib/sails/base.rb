@@ -68,7 +68,7 @@ module Sails
   #
   def self.root
     return @root if defined?(@root)
-    path = `pwd`.sub(/\n/,'') rescue Dir.pwd
+    path = `pwd -L`.sub(/\n/,'') rescue Dir.pwd
     @root ||= Pathname.new(path)
   end
 
