@@ -39,6 +39,7 @@ module Sails
         end
 
         Sails.logger.info "Started #{app_name} on pid: #{@master_pid}"
+        # puts "in init: #{Sails.service.object_id}"
 
         if options[:daemon] == false
           log_file = Sails.root.join("log/#{Sails.env}.log")
@@ -61,6 +62,7 @@ module Sails
 
       def fork_master_process!
         fork do
+          # WARN: DO NOT CALL Sails IN THIS BLOCK!
           $PROGRAM_NAME = self.app_name + " [sails master]"
           @child_pid = fork_child_process!
 
@@ -72,7 +74,7 @@ module Sails
           Signal.trap("USR2") {
             Process.kill("USR2", @child_pid)
           }
-
+          
           loop do
             sleep 1
             begin
@@ -95,6 +97,8 @@ module Sails
             # TODO: reload Sails in current process
             exit
           }
+          
+          # puts "in child: #{Sails.service.object_id}"
           Sails.start!(self.mode)          
         end
         # http://ruby-doc.org/core-1.9.3/Process.html#detach-method
