@@ -67,7 +67,9 @@ module Sails
   #   => #<Pathname:/some/path/to/project/file>
   #
   def self.root
-    @root ||= Pathname.new(Dir.pwd)
+    return @root if defined?(@root)
+    path = `pwd`.sub(/\n/,'') rescue Dir.pwd
+    @root ||= Pathname.new(path)
   end
 
   def self.root=(root)
