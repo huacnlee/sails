@@ -42,7 +42,7 @@ module Sails
 
         if options[:daemon] == false
           log_file = Sails.root.join("log/#{Sails.env}.log")
-          system "tail -f #{log_file}"
+          system "tail -f -n 0 #{log_file}"
           Process.waitpid(@master_pid)
         else
           exit
