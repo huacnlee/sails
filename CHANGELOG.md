@@ -1,3 +1,7 @@
+## 0.1.5
+
+- Fix stdout error in daemon mode.
+
 ## 0.1.4 / 2014-12-24
 
 - Sails.root use Linux pwd command, to support symlink dir, for example like Capistrano's project/current path.
