@@ -12,7 +12,6 @@ module Sails
         end
 
         set_callback :action, :after do |object|
-          ActiveRecord::Base.clear_active_connections! if defined?(ActiveRecord::Base)
         end
       end
 

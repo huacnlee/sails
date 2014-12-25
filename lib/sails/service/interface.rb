@@ -50,18 +50,21 @@ module Sails
             status = "Failed #{e.try(:code)}"
             raise e
           rescue => e
-            if defined?(ActiveRecord) && e.is_a?(ActiveRecord::RecordNotFound)
+            if e.class.to_s == "ActiveRecord::RecordNotFound"
               status = "Not Found"
               code = 404
             else
               status = "Error 500"
               code = 500
+              
+              Sails.logger.info "\"#{method_name}\" error : #{e.inspect}\n\n"
+              Sails.logger.info %Q(backtrace: #{e.backtrace.join("\n")}\n)
             end
             
-            Sails.logger.info "\"#{method_name}\" error : #{e.inspect}\n\n"
-            Sails.logger.info %Q(backtrace: #{e.backtrace.join("\n")}\n)
             instance.raise_error(code)
           ensure
+            ActiveRecord::Base.clear_active_connections! if defined?(ActiveRecord::Base)
+            
             elapsed = format('%.3f', (Time.now.to_f - time) * 1000)
             Sails.logger.info "#{status} in (#{elapsed}ms).\n\n" unless Sails.env.test?
           end
