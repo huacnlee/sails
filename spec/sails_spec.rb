@@ -17,6 +17,16 @@ describe 'Sails' do
     end
   end
   
+  describe '#init' do
+    it 'should work' do
+      Sails.instance_variable_set(:@inited, false)
+      expect(Sails).to receive(:check_create_dirs).once
+      expect(Sails).to receive(:load_initialize).once
+      Sails.init
+      expect(Sails.instance_variable_get(:@inited)).to eq true
+    end
+  end
+  
   describe '#logger' do
     it 'should be a Logger class' do
       expect(Sails.logger).to be_a(Logger)
@@ -68,6 +78,20 @@ describe 'Sails' do
       Sails.reload!
       # expect(Sails.service).not_to eq s1
       # TODO: test reload autoload_paths
+    end
+  end
+  
+  describe '#check_create_dirs' do
+    it 'should work' do
+      require "fileutils"
+      log_path = Sails.root.join("log")
+      FileUtils.rm_r(log_path) if Dir.exist?(log_path)
+      expect(Dir.exist?(log_path)).to eq false
+      
+      Sails.check_create_dirs
+      %W(log tmp tmp/cache tmp/pids).each do |name|
+        expect(Dir.exist?(Sails.root.join(name))).to eq true
+      end
     end
   end
   
