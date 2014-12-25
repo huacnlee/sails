@@ -26,8 +26,8 @@ module Sails
     option :mode, default: 'nonblocking'
     desc "start", "Start Thrift server"
     def start()
-      Sails::Daemon.init(mode: options[:mode])
-      Sails::Daemon.start_process(daemon: options[:daemon])
+      Sails::Daemon.init(mode: options[:mode], daemon: options[:daemon])
+      Sails::Daemon.start_process
     end
 
     # sails stop

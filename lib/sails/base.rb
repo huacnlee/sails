@@ -102,12 +102,15 @@ module Sails
   #
   def self.logger
     return @logger if defined?(@logger)
-    log_file = File.join(Sails.root, "log/#{self.env}.log")
-    @logger = Logger.new(log_file)
+    @logger = Logger.new(logger_path)
     @logger.formatter = proc { |severity, datetime, progname, msg|
       "#{msg}\n"
     }
     @logger
+  end
+  
+  def self.logger_path
+    @logger_path ||= Sails.root.join("log/#{self.env}.log")
   end
 
   def self.init

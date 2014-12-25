@@ -21,6 +21,10 @@ describe 'Sails' do
     it 'should be a Logger class' do
       expect(Sails.logger).to be_a(Logger)
     end
+    
+    it 'should have logger_path' do
+      expect(Sails.logger_path).to eq Sails.root.join("log/#{Sails.env}.log")
+    end
   end
   
   describe '#config' do
