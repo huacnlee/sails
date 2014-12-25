@@ -25,7 +25,9 @@ module Sails
         return pid
       end
 
-      def start_process(options = {})
+      def start_process(options = {})   
+        log_to_stdout if options[:daemon] == false
+        
         old_pid = read_pid
         if old_pid != nil
           Sails.logger.info "Current have #{app_name} process in running on pid #{old_pid}"
@@ -42,12 +44,18 @@ module Sails
         # puts "in init: #{Sails.service.object_id}"
 
         if options[:daemon] == false
-          log_file = Sails.root.join("log/#{Sails.env}.log")
-          system "tail -f -n 0 #{log_file}"
           Process.waitpid(@master_pid)
         else
           exit
         end
+      end
+      
+      def log_to_stdout
+        console = ActiveSupport::Logger.new($stdout)
+        console.formatter = Sails.logger.formatter
+        console.level = Sails.logger.level
+
+        Sails.logger.extend(ActiveSupport::Logger.broadcast(console))
       end
 
       def restart_process(options = {})
