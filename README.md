@@ -77,3 +77,4 @@ http://www.rubydoc.info/github/huacnlee/sails
 - [ ] Reload without restart;
 - [ ] Scaffold generator;
 - [X] Multi processes;
+- [ ] Thrift Server Nonblocking mode have bug;
