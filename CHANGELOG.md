@@ -1,6 +1,8 @@
 ## 0.1.5
 
 - Fix stdout error in daemon mode.
+- Clear ActiveRecord connections after method call in ensure. 
+- Do not output exception info when raise 404.
 
 ## 0.1.4 / 2014-12-24
 
