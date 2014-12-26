@@ -3,6 +3,13 @@
 - Fix stdout error in daemon mode.
 - Clear ActiveRecord connections after method call in ensure. 
 - Do not output exception info when raise 404.
+- Add more default code with new project template.
+- Add `rake client` task for thrift client connect test, and you can edit client test code in lib/tasks/client.rake.
+- Move ActiveRecord migration rake tasks into Sails.
+- Reconnect ActiveRecord after backend database connection lose.
+- Add `rake db:migrate:create` command to generate a new migration file.
+- Add default ActiveRecord initialize code.
+- Default use SQLite.
 
 ## 0.1.4 / 2014-12-24
 

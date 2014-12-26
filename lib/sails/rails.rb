@@ -11,5 +11,9 @@ if not defined?(Rails)
     def self.cache
       Sails.cache
     end
+    
+    def self.root
+      Sails.root
+    end
   end
 end

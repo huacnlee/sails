@@ -1,10 +1,7 @@
 default: &default
-  adapter: mysql2
-  pool: 100
-  username: root
-  password:
-  socket: /tmp/mysql.sock
-
+  adapter: sqlite3
+  database: db/<%= app_name %>.sqlite
+  
 development:
   <<: *default
 

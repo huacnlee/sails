@@ -41,20 +41,43 @@ $ sails start
 You can edit Thrift IDL in `app_name.thrift`, and then generate it to ruby source code.
 
 ```
-$ rake gen
+$ rake generate
 ```
 
-## Client Connect
+## Rake tasks
 
-```ruby
-require "app/services/gen-rb/you_app_name"
-@transport ||= Thrift::FramedTransport.new(::Thrift::Socket.new('127.0.0.1', 4000, 10))
-@protocol  ||= Thrift::BinaryProtocol.new(@transport)
-@client    ||= Thrift::YouAppName::Client.new(@protocol)
-@transport.open()
-puts @client.ping()
-=> Ping pong
+```bash
+rake client:ping            # client ping test
+rake db:create              # Creates the database from DATABASE_URL or config/database.yml for the current RAILS_ENV (use db:create:all to create all databases in the config)
+rake db:drop                # Drops the database from DATABASE_URL or config/database.yml for the current RAILS_ENV (use db:drop:all to drop all databases in the config)
+rake db:fixtures:load       # Load fixtures into the current environment's database
+rake db:migrate             # Migrate the database (options: VERSION=x, VERBOSE=false, SCOPE=blog)
+rake db:migrate:create      # Create new migration file
+rake db:migrate:status      # Display status of migrations
+rake db:rollback            # Rolls the schema back to the previous version (specify steps w/ STEP=n)
+rake db:schema:cache:clear  # Clear a db/schema_cache.dump file
+rake db:schema:cache:dump   # Create a db/schema_cache.dump file
+rake db:schema:dump         # Create a db/schema.rb file that is portable against any DB supported by AR
+rake db:schema:load         # Load a schema.rb file into the database
+rake db:seed                # Load the seed data from db/seeds.rb
+rake db:setup               # Create the database, load the schema, and initialize with the seed data (use db:reset to also drop the database first)
+rake db:structure:dump      # Dump the database structure to db/structure.sql
+rake db:structure:load      # Recreate the databases from the structure.sql file
+rake db:version             # Retrieves the current schema version number
+rake generate               # Generate code from thrift IDL file
 ```
+
+## Client connect to test
+
+You can write test code in `lib/tasks/client.rake` to test your thrift methods.
+
+And then start sails server, and run rake task to test, for example:
+
+```bash
+sails s --daemon
+rake client:ping
+```
+
 
 ## Deploy
 
@@ -78,3 +101,5 @@ http://www.rubydoc.info/github/huacnlee/sails
 - [ ] Scaffold generator;
 - [X] Multi processes;
 - [ ] Thrift Server Nonblocking mode have bug;
+- [ ] Default test case templates;
+- [ ] Client rake task to test services;

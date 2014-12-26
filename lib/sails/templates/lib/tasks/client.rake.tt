@@ -1,0 +1,25 @@
+$:.unshift Sails.root.join("app/services")
+require "handler"
+
+class TestClient
+  def self.instance
+    @transport ||= Thrift::FramedTransport.new(::Thrift::Socket.new('127.0.0.1', 4000, 10))
+    @protocol  ||=  Thrift::BinaryProtocol.new(@transport)
+    @client    ||= Thrift::<%= @app_name.capitalize %>::Client.new(@protocol)
+    @transport.open() if !@transport.open?
+    @client
+  end
+  
+  def self.method_missing(name, *args)
+    puts "> #{name}"
+    puts self.instance.send(name, *args).inspect
+    puts ""
+  end
+end
+
+namespace :client do
+  desc "client ping test"
+  task :ping do
+    TestClient.ping()
+  end
+end
