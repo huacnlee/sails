@@ -103,3 +103,4 @@ http://www.rubydoc.info/github/huacnlee/sails
 - [ ] Thrift Server Nonblocking mode have bug;
 - [ ] Default test case templates;
 - [ ] Client rake task to test services;
+- [ ] Write more framework test cases.
