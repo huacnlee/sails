@@ -9,10 +9,6 @@ module Sails
         define_callbacks :action
 
         set_callback :action, :before do |object|
-          # try to reconnect database
-          if defined?(ActiveRecord::Base)
-            ActiveRecord::Base.verify_active_connections!
-          end
         end
 
         set_callback :action, :after do |object|
