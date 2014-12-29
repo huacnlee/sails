@@ -37,4 +37,10 @@ module Sails
   autoload :CLI
   autoload :Daemon
   autoload :Console
+
+  eager_autoload do
+    autoload :LogSubscriber
+  end
 end
+
+Sails.eager_load!

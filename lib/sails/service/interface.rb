@@ -29,6 +29,7 @@ module Sails
       
       def set_params_with_method_args(instance, method_name, args)
         method_args = instance.method(method_name.to_sym).parameters.map { |arg| arg[1] }
+        instance.params[:method_name] = method_name
         method_args.each_with_index do |arg, idx|
           instance.params[arg] = args[idx]
         end
@@ -38,35 +39,35 @@ module Sails
         set_params_with_method_args(instance, method_name, args)
         instance.run_callbacks :action do
           time = Time.now.to_f
+          
+          raw_payload = {
+            controller: instance.class.to_s,
+            action: method_name,
+            params: instance.params,
+          }
 
-          Sails.logger.info "\nProcessing by \"#{method_name}\" at #{Time.now.to_s}" unless Sails.env.test?
-          Sails.logger.info "  Parameters: { #{args.map(&:inspect).join(', ')} }" unless Sails.env.test?
-
-          begin
-            res = instance.send(method_name, *args, &block)
-            status = "Completed"
-            return res
-          rescue Thrift::Exception => e
-            status = "Failed #{e.try(:code)}"
-            raise e
-          rescue => e
-            if e.class.to_s == "ActiveRecord::RecordNotFound"
-              status = "Not Found"
-              code = 404
-            else
-              status = "Error 500"
-              code = 500
+          ActiveSupport::Notifications.instrument("start_processing.sails", raw_payload.dup)
+          ActiveSupport::Notifications.instrument("process_action.sails", raw_payload) do |payload|
+            begin
+              res = instance.send(method_name, *args, &block)
+              payload[:code] = 200
+              return res
+            rescue Thrift::Exception => e
+              payload[:code] = e.try(:code)
+              raise e
+            rescue => e
+              if e.class.to_s == "ActiveRecord::RecordNotFound"
+                payload[:code] = 404
+              else
+                payload[:code] = 500
               
-              Sails.logger.info "\"#{method_name}\" error : #{e.inspect}\n\n"
-              Sails.logger.info %Q(backtrace: #{e.backtrace.join("\n")}\n)
+                Sails.logger.info "  ERROR #{e.inspect} backtrace: \n  #{e.backtrace.join("\n  ")}"
+              end
+            
+              instance.raise_error(payload[:code])
+            ensure
+              ActiveRecord::Base.clear_active_connections! if defined?(ActiveRecord::Base)
             end
-            
-            instance.raise_error(code)
-          ensure
-            ActiveRecord::Base.clear_active_connections! if defined?(ActiveRecord::Base)
-            
-            elapsed = format('%.3f', (Time.now.to_f - time) * 1000)
-            Sails.logger.info "#{status} in (#{elapsed}ms).\n\n" unless Sails.env.test?
           end
         end
       end
