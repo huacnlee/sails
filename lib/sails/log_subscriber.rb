@@ -17,11 +17,13 @@ module Sails
       info do
         payload   = event.payload
         additions = []
-        additions << ("DB: %.1fms" % (ActiveRecord::RuntimeRegistry.sql_runtime || 0)) if defined?(ActiveRecord::RuntimeRegistry)
+        
+        additions << ("DB: %.1fms" % payload[:db_runtime].to_f) if payload[:db_runtime]
         additions << ("Views: %.1fms" % payload[:view_runtime].to_f) if payload[:view_runtime]
-        code = payload[:code]
+        status = payload[:status]
+        payload[:runtime] = event.duration
 
-        message = "Completed #{code} #{Rack::Utils::HTTP_STATUS_CODES[code]} in #{event.duration.round(2)}ms"
+        message = "Completed #{status} #{Rack::Utils::HTTP_STATUS_CODES[status]} in #{event.duration.round(2)}ms"
         message << " (#{additions.join(" | ")})"
         message
       end

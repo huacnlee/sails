@@ -50,23 +50,28 @@ module Sails
           ActiveSupport::Notifications.instrument("process_action.sails", raw_payload) do |payload|
             begin
               res = instance.send(method_name, *args, &block)
-              payload[:code] = 200
+              payload[:status] = 200
               return res
             rescue Thrift::Exception => e
-              payload[:code] = e.try(:code)
+              payload[:status] = e.try(:code)
               raise e
             rescue => e
               if e.class.to_s == "ActiveRecord::RecordNotFound"
-                payload[:code] = 404
+                payload[:status] = 404
               else
-                payload[:code] = 500
+                payload[:status] = 500
               
                 Sails.logger.info "  ERROR #{e.inspect} backtrace: \n  #{e.backtrace.join("\n  ")}"
               end
             
-              instance.raise_error(payload[:code])
+              instance.raise_error(payload[:status])
             ensure
               ActiveRecord::Base.clear_active_connections! if defined?(ActiveRecord::Base)
+              if defined?(ActiveRecord::RuntimeRegistry)
+                payload[:db_runtime] = ActiveRecord::RuntimeRegistry.sql_runtime || 0
+              else
+                payload[:db_runtime] = nil
+              end
             end
           end
         end
