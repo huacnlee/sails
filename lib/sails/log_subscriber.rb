@@ -11,6 +11,8 @@ module Sails
       info ""
       info "Processing by #{payload[:controller]}##{payload[:action]} at #{Time.now}"
       info "  Parameters: #{params.inspect}" unless params.empty?
+      
+      ActiveRecord::LogSubscriber.reset_runtime if defined?(ActiveRecord::LogSubscriber)
     end
 
     def process_action(event)
