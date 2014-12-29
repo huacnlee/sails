@@ -9,6 +9,7 @@
 - Add `rake db:migrate:create` command to generate a new migration file.
 - Add default ActiveRecord initialize code.
 - Default use SQLite.
+- Use ActiveSupport::Notifications to output service action logs.
 
 ## 0.1.4 / 2014-12-24
 

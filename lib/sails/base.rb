@@ -246,10 +246,12 @@ module Sails
     end
   
     def check_create_dirs
-      %W(log tmp/cache tmp/pids).each do |name|
+      %W(log tmp tmp/cache tmp/pids).each do |name|
         if not Dir.exist? Sails.root.join(name)
           require "fileutils"
-          FileUtils.mkdir_p Sails.root.join(name)
+          dir_path = Sails.root.join(name)
+          FileUtils.mkdir_p dir_path
+          FileUtils.touch [dir_path,".keep"].join("/")
         end
       end
     end
