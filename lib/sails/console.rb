@@ -15,7 +15,7 @@ module Sails
     def reload!
       puts "Reloading..."
       Sails.reload!(force: true)
-      return true
+      true
     end
   end
   

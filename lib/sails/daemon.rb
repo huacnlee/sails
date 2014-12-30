@@ -23,12 +23,12 @@ module Sails
         rescue
           pid = nil
         end
-        return pid
+        pid
       end
 
       def start_process     
         old_pid = read_pid
-        if old_pid != nil
+        if !old_pid.nil?
           puts colorize("Current have #{app_name} process in running on pid #{old_pid}", :red)
           return
         end
@@ -110,12 +110,12 @@ module Sails
         end
         # http://ruby-doc.org/core-1.9.3/Process.html#detach-method
         Process.detach(pid)
-        return pid
+        pid
       end
 
       def stop_process
         pid = read_pid
-        if pid == nil
+        if pid.nil?
           puts colorize("#{app_name} process not found, pid #{pid}", :red)
           return
         end

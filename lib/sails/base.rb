@@ -165,7 +165,7 @@ module Sails
         ActiveSupport::Dependencies.clear
         # reload_server!
       end
-      return true
+      true
     end
 
     def reload_server!
