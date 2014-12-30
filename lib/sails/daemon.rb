@@ -67,14 +67,14 @@ module Sails
           $PROGRAM_NAME = self.app_name + " [sails master]"
           @child_pid = fork_child_process!
 
-          Signal.trap("QUIT") {
+          Signal.trap("QUIT") do
             Process.kill("QUIT", @child_pid)
             exit
-          }
+          end
 
-          Signal.trap("USR2") {
+          Signal.trap("USR2") do
             Process.kill("USR2", @child_pid)
-          }
+          end
           
           loop do
             sleep 1
@@ -91,14 +91,14 @@ module Sails
         pid = fork do
           $PROGRAM_NAME = self.app_name + " [sails child]"
             
-          Signal.trap("QUIT") {
+          Signal.trap("QUIT") do
             exit
-          }
+          end
           
-          Signal.trap("USR2") {
+          Signal.trap("USR2") do
             # TODO: reload Sails in current process
             exit
-          }
+          end
           
           if self.daemon == true
             redirect_stdout

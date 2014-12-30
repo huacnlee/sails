@@ -13,11 +13,11 @@ module Sails
       __dir__
     end
     
-    no_commands {
+    no_commands do
       def app_name
         @app_name
       end
-    }
+    end
 
     # sails start
     #
