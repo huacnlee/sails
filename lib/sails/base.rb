@@ -1,4 +1,4 @@
-Bundler.require()
+Bundler.require
 
 module Sails
   extend ActiveSupport::Autoload
@@ -165,7 +165,7 @@ module Sails
         ActiveSupport::Dependencies.clear
         # reload_server!
       end
-      return true
+      true
     end
 
     def reload_server!
@@ -246,7 +246,7 @@ module Sails
     end
   
     def check_create_dirs
-      %W(log tmp tmp/cache tmp/pids).each do |name|
+      %w(log tmp tmp/cache tmp/pids).each do |name|
         if not Dir.exist? Sails.root.join(name)
           require "fileutils"
           dir_path = Sails.root.join(name)
@@ -258,4 +258,4 @@ module Sails
   end
 end
 
-Sails.init()
+Sails.init

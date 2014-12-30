@@ -23,12 +23,12 @@ module Sails
         rescue
           pid = nil
         end
-        return pid
+        pid
       end
 
       def start_process     
         old_pid = read_pid
-        if old_pid != nil
+        if !old_pid.nil?
           puts colorize("Current have #{app_name} process in running on pid #{old_pid}", :red)
           return
         end
@@ -67,20 +67,20 @@ module Sails
           $PROGRAM_NAME = self.app_name + " [sails master]"
           @child_pid = fork_child_process!
 
-          Signal.trap("QUIT") {
+          Signal.trap("QUIT") do
             Process.kill("QUIT", @child_pid)
             exit
-          }
+          end
 
-          Signal.trap("USR2") {
+          Signal.trap("USR2") do
             Process.kill("USR2", @child_pid)
-          }
+          end
           
           loop do
             sleep 1
             begin
               Process.getpgid(@child_pid)
-            rescue Errno::ESRCH => e
+            rescue Errno::ESRCH
               @child_pid = fork_child_process!
             end
           end
@@ -91,14 +91,14 @@ module Sails
         pid = fork do
           $PROGRAM_NAME = self.app_name + " [sails child]"
             
-          Signal.trap("QUIT") {
+          Signal.trap("QUIT") do
             exit
-          }
+          end
           
-          Signal.trap("USR2") {
+          Signal.trap("USR2") do
             # TODO: reload Sails in current process
             exit
-          }
+          end
           
           if self.daemon == true
             redirect_stdout
@@ -110,12 +110,12 @@ module Sails
         end
         # http://ruby-doc.org/core-1.9.3/Process.html#detach-method
         Process.detach(pid)
-        return pid
+        pid
       end
 
       def stop_process
         pid = read_pid
-        if pid == nil
+        if pid.nil?
           puts colorize("#{app_name} process not found, pid #{pid}", :red)
           return
         end

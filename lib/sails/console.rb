@@ -15,7 +15,7 @@ module Sails
     def reload!
       puts "Reloading..."
       Sails.reload!(force: true)
-      return true
+      true
     end
   end
   
@@ -38,7 +38,7 @@ module Sails
       if defined?(IRB::ExtendCommandBundle)
         IRB::ExtendCommandBundle.send :include, Sails::ConsoleMethods
       end
-      IRB.start()
+      IRB.start
     end
   end
 end

@@ -38,8 +38,6 @@ module Sails
       def run_action(instance, method_name, *args, &block)
         set_params_with_method_args(instance, method_name, args)
         instance.run_callbacks :action do
-          time = Time.now.to_f
-          
           raw_payload = {
             controller: instance.class.to_s,
             action: method_name,

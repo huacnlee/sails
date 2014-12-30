@@ -17,7 +17,7 @@ module Sails
               # Except for public instance methods of Base and its ancestors
               internal_methods +
               # Be sure to include shadowed public instance methods of this class
-              public_instance_methods(false)).uniq.map { |x| x.to_s }
+              public_instance_methods(false)).uniq.map(&:to_s)
 
             # Clear out AS callback method pollution
             Set.new(methods.reject { |method| method =~ /_one_time_conditions/ })
