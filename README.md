@@ -100,7 +100,6 @@ http://www.rubydoc.info/github/huacnlee/sails
 - [ ] Reload without restart;
 - [ ] Scaffold generator;
 - [X] Multi processes;
-- [ ] Thrift Server Nonblocking mode have bug;
 - [ ] Default test case templates;
 - [ ] Client rake task to test services;
 - [ ] Write more framework test cases.
