@@ -2,7 +2,7 @@ module Sails
   module Service
     class Interface
       attr_accessor :services
-      
+
       def initialize
         @services = []
         Dir["#{Sails.root.join("app/services")}/*_service.rb"].each do |f|
@@ -26,7 +26,7 @@ module Sails
           end
         end
       end
-      
+
       def set_params_with_method_args(instance, method_name, args)
         method_args = instance.method(method_name.to_sym).parameters.map { |arg| arg[1] }
         instance.params[:method_name] = method_name
@@ -58,10 +58,10 @@ module Sails
                 payload[:status] = 404
               else
                 payload[:status] = 500
-              
+
                 Sails.logger.info "  ERROR #{e.inspect} backtrace: \n  #{e.backtrace.join("\n  ")}"
               end
-            
+
               instance.raise_error(payload[:status])
             ensure
               ActiveRecord::Base.clear_active_connections! if defined?(ActiveRecord::Base)

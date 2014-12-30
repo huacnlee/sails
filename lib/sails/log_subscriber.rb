@@ -1,17 +1,17 @@
 module Sails
   class LogSubscriber < ActiveSupport::LogSubscriber
     INTERNAL_PARAMS = %w(controller action format _method only_path)
-    
+
     def start_processing(event)
       return unless logger.info?
-      
+
       payload = event.payload
       params = payload[:params]
-      
+
       info ""
       info "Processing by #{payload[:controller]}##{payload[:action]} at #{Time.now}"
       info "  Parameters: #{params.inspect}" unless params.empty?
-      
+
       ActiveRecord::LogSubscriber.reset_runtime if defined?(ActiveRecord::LogSubscriber)
     end
 
@@ -19,7 +19,7 @@ module Sails
       info do
         payload   = event.payload
         additions = []
-        
+
         additions << ("DB: %.1fms" % payload[:db_runtime].to_f) if payload[:db_runtime]
         additions << ("Views: %.1fms" % payload[:view_runtime].to_f) if payload[:view_runtime]
         status = payload[:status]
@@ -30,7 +30,7 @@ module Sails
         message
       end
     end
-    
+
     def logger
       Sails.logger
     end

@@ -9,7 +9,7 @@ class TestClient
     @transport.open() if !@transport.open?
     @client
   end
-  
+
   def self.method_missing(name, *args)
     puts "> #{name}"
     puts self.instance.send(name, *args).inspect

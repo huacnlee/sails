@@ -2,9 +2,9 @@ module Sails
   module Service
     module Callbacks
       extend ActiveSupport::Concern
-      
+
       include ActiveSupport::Callbacks
-      
+
       included do
         define_callbacks :action
 
