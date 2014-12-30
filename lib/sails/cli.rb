@@ -25,7 +25,7 @@ module Sails
     option :daemon, type: :boolean, default: false
     option :mode, default: 'nonblocking'
     desc "start", "Start Thrift server"
-    def start()
+    def start
       Sails::Daemon.init(mode: options[:mode], daemon: options[:daemon])
       Sails::Daemon.start_process
     end
@@ -35,7 +35,7 @@ module Sails
     # Stop thrift app server
     option :mode, default: 'nonblocking'
     desc "stop", "Stop Thrift server"
-    def stop()
+    def stop
       Sails::Daemon.init(mode: options[:mode])
       Sails::Daemon.stop_process
     end
@@ -45,13 +45,13 @@ module Sails
     # Restart thrift app server
     option :mode, default: 'nonblocking'
     desc "restart", "Restart Thrift server"
-    def restart()
+    def restart
       Sails::Daemon.init(mode: options[:mode])
       Sails::Daemon.restart_process
     end
 
     desc "new APP_NAME", "Create a project"
-    def new name
+    def new(name)
       require 'fileutils'
 
       app_dir = File.expand_path File.join(Dir.pwd, name)

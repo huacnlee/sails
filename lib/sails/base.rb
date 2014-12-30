@@ -1,4 +1,4 @@
-Bundler.require()
+Bundler.require
 
 module Sails
   extend ActiveSupport::Autoload
@@ -258,4 +258,4 @@ module Sails
   end
 end
 
-Sails.init()
+Sails.init
