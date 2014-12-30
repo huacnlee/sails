@@ -80,7 +80,7 @@ module Sails
             sleep 1
             begin
               Process.getpgid(@child_pid)
-            rescue Errno::ESRCH => e
+            rescue Errno::ESRCH
               @child_pid = fork_child_process!
             end
           end

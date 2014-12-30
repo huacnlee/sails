@@ -57,7 +57,6 @@ module Sails
       app_dir = File.expand_path File.join(Dir.pwd, name)
       @rel_dir = name
       @app_name = File.basename app_dir
-      templte_dir = File.join(File.dirname(__FILE__), "templates")
 
       directory 'templates', name
       %W(log tmp/pids tmp/cache lib/tasks app/models/concerns config/initializers log).each do |dir_name|
