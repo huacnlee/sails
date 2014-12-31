@@ -10,7 +10,7 @@ describe 'Sails::CLI' do
       cli.start
     }
   end
-  
+
   describe '.stop' do
     it { expect(cli).to respond_to(:stop) }
     it {
@@ -19,7 +19,7 @@ describe 'Sails::CLI' do
       cli.stop
     }
   end
-  
+
   describe '.restart' do
     it { expect(cli).to respond_to(:restart) }
     it {
@@ -28,15 +28,15 @@ describe 'Sails::CLI' do
       cli.restart
     }
   end
-  
+
   describe '.new' do
     it { expect(cli).to respond_to(:new) }
   end
-  
+
   describe '.console' do
     it { expect(cli).to respond_to(:console) }
   end
-  
+
   describe '.version' do
     it { expect(cli).to respond_to(:version) }
   end

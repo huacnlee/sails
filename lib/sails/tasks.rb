@@ -28,7 +28,7 @@ namespace :db do
       abort("no NAME specified. use `rake db:migrate:create NAME=create_users`") if !name
 
       migrations_dir = File.join("db", "migrate")
-      version = ENV["VERSION"] || Time.now.utc.strftime("%Y%m%d%H%M%S") 
+      version = ENV["VERSION"] || Time.now.utc.strftime("%Y%m%d%H%M%S")
       filename = "#{version}_#{name}.rb"
       migration_name = name.gsub(/_(.)/) { $1.upcase }.gsub(/^(.)/) { $1.upcase }
 
@@ -51,7 +51,7 @@ desc "Generate code from thrift IDL file"
 task :generate do
   puts "Generating Thrift code..."
   out = Sails.root.join("app/services/gen-rb")
-  
+
   cmd = "thrift --gen rb -out #{out} -strict #{Sails.config.app_name}.thrift"
   puts "> #{cmd}"
   system cmd

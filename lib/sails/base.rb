@@ -109,7 +109,7 @@ module Sails
       }
       @logger
     end
-  
+
     def logger_path
       @logger_path ||= Sails.root.join("log/#{self.env}.log")
     end
@@ -244,7 +244,7 @@ module Sails
         require f
       end
     end
-  
+
     def check_create_dirs
       %w(log tmp tmp/cache tmp/pids).each do |name|
         if not Dir.exist? Sails.root.join(name)

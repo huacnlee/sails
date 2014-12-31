@@ -26,7 +26,7 @@ module Sails
         pid
       end
 
-      def start_process     
+      def start_process
         old_pid = read_pid
         if !old_pid.nil?
           puts colorize("Current have #{app_name} process in running on pid #{old_pid}", :red)
@@ -75,7 +75,7 @@ module Sails
           Signal.trap("USR2") do
             Process.kill("USR2", @child_pid)
           end
-          
+
           loop do
             sleep 1
             begin
@@ -90,23 +90,22 @@ module Sails
       def fork_child_process!
         pid = fork do
           $PROGRAM_NAME = self.app_name + " [sails child]"
-            
           Signal.trap("QUIT") do
             exit
           end
-          
+
           Signal.trap("USR2") do
             # TODO: reload Sails in current process
             exit
           end
-          
+
           if self.daemon == true
             redirect_stdout
           else
             log_to_stdout
           end
           # puts "in child: #{Sails.service.object_id}"
-          Sails.start!(self.mode)          
+          Sails.start!(self.mode)
         end
         # http://ruby-doc.org/core-1.9.3/Process.html#detach-method
         Process.detach(pid)
@@ -119,7 +118,7 @@ module Sails
           puts colorize("#{app_name} process not found, pid #{pid}", :red)
           return
         end
-        
+
         print "Stoping #{app_name}..."
         begin
           Process.kill("QUIT", pid)
@@ -128,7 +127,7 @@ module Sails
         end
         puts colorize(" [OK]", :green)
       end
-      
+
       private
       # Sync Sails.logger output in file to STDOUT
       def log_to_stdout
@@ -138,19 +137,19 @@ module Sails
 
         Sails.logger.extend(ActiveSupport::Logger.broadcast(console))
       end
-      
+
       # Redirect stdout, stderr to log file,
       # If we not do this, stdout will block sails daemon, for example `puts`.
       def redirect_stdout
         redirect_io($stdout, Sails.logger_path)
         redirect_io($stderr, Sails.logger_path)
       end
-  
+
       def redirect_io(io, path)
         File.open(path, 'ab') { |fp| io.reopen(fp) } if path
         io.sync = true
       end
-      
+
       def colorize(text, c)
         case c
         when :red

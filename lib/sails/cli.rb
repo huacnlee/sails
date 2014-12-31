@@ -4,7 +4,7 @@ require 'sails/version'
 module Sails
   class CLI < Thor
     include Thor::Actions
-    
+
     map '-v' => :version
     map 's' => :start
     map 'c' => :console
@@ -12,7 +12,7 @@ module Sails
     def self.source_root
       __dir__
     end
-    
+
     no_commands do
       def app_name
         @app_name
@@ -39,7 +39,7 @@ module Sails
       Sails::Daemon.init(mode: options[:mode])
       Sails::Daemon.stop_process
     end
-    
+
     # sails restart
     #
     # Restart thrift app server
@@ -67,12 +67,12 @@ module Sails
       @app_name = nil
       @rel_dir = nil
     end
-    
+
     desc "console", "Enter Sails console"
     def console
       Sails::Console.start(Sails.root.join("config/application.rb"))
     end
-    
+
     desc "version", "Show Sails version"
     def version
       puts "Sails #{Sails.version}"

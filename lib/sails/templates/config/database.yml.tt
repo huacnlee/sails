@@ -1,7 +1,7 @@
 default: &default
   adapter: sqlite3
   database: db/<%= app_name %>.sqlite
-  
+
 development:
   <<: *default
 

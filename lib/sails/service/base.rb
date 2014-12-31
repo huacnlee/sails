@@ -3,13 +3,13 @@ module Sails
     # Like ActionController::Base
     class Base
       include Callbacks
-      
+
       class << self
         def internal_methods
           controller = self.superclass
           controller.public_instance_methods(true)
         end
-        
+
         def action_methods
           @action_methods ||= begin
             # All public instance methods of this class, including ancestors
@@ -24,11 +24,11 @@ module Sails
           end
         end
       end
-      
+
       # action params to Hash
       #
       # example:
-      # 
+      #
       #    class FooService < Sails::Service::Base
       #       def foo(name, age)
       #         # you can use params in any instance methods
@@ -40,13 +40,13 @@ module Sails
       def params
         @params ||= {}
       end
-      
+
       # Raise a Sails::Service::Exception (Thrift::Exception)
       # if you want custom error you can override this method in you ApplicationService
       def raise_error(code, msg = nil)
         raise Exception.new(code: code, message: msg)
       end
-      
+
       def action_methods
         self.class.action_methods
       end
