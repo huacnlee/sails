@@ -10,7 +10,7 @@ module Sails
 
       info ""
       info "Processing by #{payload[:controller]}##{payload[:action]} at #{Time.now}"
-      info "  Parameters: #{params.inspect}" unless params.empty?
+      info "  Parameters: #{params.except(:method_name).inspect}" unless params.empty?
 
       ActiveRecord::LogSubscriber.reset_runtime if defined?(ActiveRecord::LogSubscriber)
     end
@@ -19,9 +19,16 @@ module Sails
       info do
         payload   = event.payload
         additions = []
-
-        additions << ("DB: %.1fms" % payload[:db_runtime].to_f) if payload[:db_runtime]
-        additions << ("Views: %.1fms" % payload[:view_runtime].to_f) if payload[:view_runtime]
+        
+        payload.each_key do |key|
+          key_s = key.to_s
+          if key_s.include?("_runtime")
+            next if payload[key].blank?
+            runtime_name = key_s.sub("_runtime","").capitalize
+            additions << ("#{runtime_name}: %.1fms" % payload[key].to_f)
+          end
+        end
+        
         status = payload[:status]
         payload[:runtime] = event.duration
 
