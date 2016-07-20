@@ -19,7 +19,7 @@ module Sails
       info do
         payload   = event.payload
         additions = []
-        
+
         payload.each_key do |key|
           key_s = key.to_s
           if key_s.include?("_runtime")
@@ -28,11 +28,11 @@ module Sails
             additions << ("#{runtime_name}: %.1fms" % payload[key].to_f)
           end
         end
-        
+
         status = payload[:status]
         payload[:runtime] = event.duration
 
-        message = "Completed #{status} #{Rack::Utils::HTTP_STATUS_CODES[status]} in #{event.duration.round(2)}ms"
+        message = "Completed #{status} in #{event.duration.round(2)}ms"
         message << " (#{additions.join(" | ")})"
         message
       end
