@@ -1,3 +1,7 @@
+## 0.2.1
+
+- Allow ActiveSupport > 5.0.
+
 ## 0.2.0
 
 - Remove define `Rails`;
