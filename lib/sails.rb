@@ -5,6 +5,7 @@ require 'i18n'
 require 'thrift'
 require 'yaml'
 require "sails/base"
+require "sails/rails"
 
 # Sails
 #
