@@ -4,7 +4,6 @@ require 'active_support/all'
 require 'i18n'
 require 'thrift'
 require 'yaml'
-require "sails/rails"
 require "sails/base"
 
 # Sails

@@ -1,3 +1,7 @@
+## 0.2.0
+
+- Remove define `Rails`;
+
 ## 0.1.5
 
 - Fix stdout error in daemon mode.
