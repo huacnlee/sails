@@ -257,5 +257,3 @@ module Sails
     end
   end
 end
-
-Sails.init
