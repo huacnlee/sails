@@ -1,3 +1,7 @@
+## 0.2.2
+
+- Remove Sails.init in base.rb (#5)
+
 ## 0.2.1
 
 - Allow ActiveSupport > 5.0.
