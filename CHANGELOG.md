@@ -1,3 +1,7 @@
+## 0.2.3
+
+- clear service instance params before set
+
 ## 0.2.2
 
 - Remove Sails.init in base.rb (#5)

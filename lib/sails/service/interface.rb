@@ -28,6 +28,7 @@ module Sails
       end
 
       def set_params_with_method_args(instance, method_name, args)
+        instance.params.clear
         method_args = instance.method(method_name.to_sym).parameters.map { |arg| arg[1] }
         instance.params[:method_name] = method_name
         method_args.each_with_index do |arg, idx|

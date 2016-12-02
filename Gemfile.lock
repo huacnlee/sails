@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sails (0.2.2)
+    sails (0.2.3)
       activesupport (> 3.2.0)
       thor
       thrift (>= 0.9.0)
