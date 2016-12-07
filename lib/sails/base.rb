@@ -207,7 +207,7 @@ module Sails
       @server = ::Thrift::ThreadPoolServer.new(processor, transport, transport_factory, protocol_factory, config.thread_size)
 
       logger.info "Boot on: #{Sails.root}"
-      logger.info "[#{Time.now}] Starting the Sails with ThreadPool size: #{Setting.pool_size}..."
+      logger.info "[#{Time.now}] Starting the Sails with ThreadPool size: #{config.thread_size}..."
       logger.info "serve: 127.0.0.1:#{config.thread_port}"
 
       begin

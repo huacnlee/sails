@@ -1,3 +1,7 @@
+## 0.2.4
+
+- fix start_thread_pool_server undefined Setting error
+
 ## 0.2.3
 
 - clear service instance params before set
